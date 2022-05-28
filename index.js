@@ -24,7 +24,7 @@ app.get('/api/cmc/market', async (req,res)=>{
     res.send(response.data)
 })
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send({status:true, message:"System is responding"});
 })
 
     
@@ -35,12 +35,16 @@ const authRoutes = require('./src/api/routes/Users/auth/index')
 const accounts = require("./src/api/routes/Users/accounts/accounts")
 const userRouter = require('./src/api/routes/Users/otp/userRouter');
 const resetRouter = require("./src/api/routes/Users/reset/password-reset")
+const form = require('./src/api/routes/Form/index')
+const categoryRoute =  require('./src/api/routes/Category/category')
 //Create routes
 app.use('/users',  userRoutes)
 app.use('/auth', authRoutes)
 app.use('/accounts', accounts)
 app.use('/api/user', userRouter);
 app.use('/api/reset', resetRouter);
+app.use('/api/events',form)
+app.use('/api/category',categoryRoute)
 // app.use('/api/cmc/market',);
 
 
