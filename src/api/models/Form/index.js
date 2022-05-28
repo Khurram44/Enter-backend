@@ -13,7 +13,6 @@ this.venue	    = Events.venue;
 this.address	        = Events.address;
 this.lat	    = Events.lat;    //latitude
 this.lon	    = Events.lon;    //longitude
-this.distance	    = Events.distance;
 this.start	    = Events.start;
 this.end    = Events.end;
 this.price	    = Events.price;
