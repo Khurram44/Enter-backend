@@ -11,7 +11,7 @@ mongoose
   .then(console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-const port = process.env.PORT || 5004
+const port = process.env.PORT || 5009
 
 app.listen(port, () => {
     console.log(`App running on port ${port}!`)
