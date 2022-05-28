@@ -13,7 +13,7 @@ exports.getList = (req,res) =>{
 }
 
 exports.getEventsByID= (req,res)=>{
-   module.getEventsByID(req.params.email,(err,Events)=>{
+   module.getEventsByID(req.params.id,(err,Events)=>{
       if(err)
       {
          res.send(err)
@@ -26,6 +26,20 @@ exports.getEventsByID= (req,res)=>{
    })
 }
 
+exports.getEventsByCatID= (req,res)=>{
+    module.getEventsByCatID(req.params.category,(err,Events)=>{
+       if(err)
+       {
+          res.send(err)
+       }
+       else{
+          console.log("Single Events data",Events)
+          res.send(Events)
+       }
+ 
+    })
+ }
+ 
 
 exports.AddEvents=(req,res)=>{
    const data = new module(req.body)   

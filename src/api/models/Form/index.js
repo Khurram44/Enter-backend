@@ -19,8 +19,8 @@ this.price	    = Events.price;
 this.date	    = Events.date;
 this.place	    = Events.place;
 this.created_by	    = Events.created_by; 
-this.created_at	    = Events.created_at;
-this.updated_at   = Events.updated_at;
+this.created_at	    = new Date().toISOString().slice(0, 19).replace('T', ' ');
+this.updated_at   = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 
 }   
@@ -41,7 +41,7 @@ Events.getResult = (result) => {
 
 //Get Events by ID model
 Events.getEventsByID=(id,result)=>{
-    db.query('SELECT * from events WHERE email=?',id,(err,res)=>{
+    db.query('SELECT * from events WHERE id=?',id,(err,res)=>{
         if(err)
         {
             console.log("error while fetching")
@@ -55,6 +55,20 @@ Events.getEventsByID=(id,result)=>{
     })
 }
 
+Events.getEventsByCatID=(id,result)=>{
+    db.query('SELECT * from events WHERE category=?',id,(err,res)=>{
+        if(err)
+        {
+            console.log("error while fetching")
+            result(null,err)
+
+        }
+        else{
+            console.log("selected by ID")
+            result(null,res)
+        }
+    })
+}
 
 //Create model
 Events.createEvents=(EmpReqData, result)=>{
