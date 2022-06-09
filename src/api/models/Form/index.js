@@ -18,6 +18,7 @@ this.end    = Events.end;
 this.price	    = Events.price;
 this.date	    = Events.date;
 this.place	    = Events.place;
+this.flag = Events.flag;
 this.created_by	    = Events.created_by; 
 this.created_at	    = new Date().toISOString().slice(0, 19).replace('T', ' ');
 this.updated_at   = new Date().toISOString().slice(0, 19).replace('T', ' ');
