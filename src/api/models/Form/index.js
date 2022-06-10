@@ -23,7 +23,6 @@ this.created_by	    = Events.created_by;
 this.created_at	    = new Date().toISOString().slice(0, 19).replace('T', ' ');
 this.updated_at   = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-
 }   
 
 //Get Events model
@@ -90,8 +89,11 @@ Events.createEvents=(EmpReqData, result)=>{
 //Update Model
 Events.updateEvents=(id,data,result)=>{
 
-    db.query('UPDATE events SET is_verified = 1 WHERE email=?',
-    [id],(err,res)=>{
+    db.query('UPDATE events SET title = ? , category = ? , subTitle = ? , venue = ? , address = ? , lat = ? , lon = ? , start = ? , end = ? , price = ? , date = ? , place = ? , flag = ? , updated_at = ? WHERE    id=?',
+    [
+data.title , data.category , data.subTitle , data.venue , data.address , data.lat , data.lon , data.start , data.end , data.price , data.date , data.place , data.flag , data.updated_at
+
+, id    ],(err,res)=>{
         if(err)
         {
             console.log(err)

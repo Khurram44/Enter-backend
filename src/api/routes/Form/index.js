@@ -9,7 +9,7 @@ const express = require('express')
  router.get('/category/:category',UserController.getEventsByCatID)
   router.post('/',UserController.AddEvents)
  router.delete('/delete/:id',UserController.deleteEvents)
- router.put('/update/:email',UserController.UpdateEvents)
+ router.put('/update/:id',UserController.UpdateEvents)
  router.put('/has-account/:email',UserController.updateAccount)
  
  //export router for getting access

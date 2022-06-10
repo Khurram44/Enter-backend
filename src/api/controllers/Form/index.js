@@ -75,7 +75,7 @@ exports.UpdateEvents=(req,res)=>{
       res.send(400).send({success:false,message:"Please fill up all the fields"})
    }
    else{
-      module.updateEvents(req.params.email,data,(err,emp)=>{
+      module.updateEvents(req.params.id,data,(err,emp)=>{
          if(err)
          {
             res.send(err)
