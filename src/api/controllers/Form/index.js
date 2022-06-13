@@ -8,7 +8,19 @@ exports.getList = (req,res) =>{
           res.send(err)
        }
        console.log(emp)
-       res.send(emp)
+       let news = emp.map((e)=>{
+          e.location= [{
+               lat:e.lat,
+               lng:e.lon
+          }]
+          delete e.lat 
+          delete e.lon
+          delete e.created_by
+          delete e.created_at
+            delete e.updated_at
+          return e
+       })
+       res.send(news)
    })
 }
 

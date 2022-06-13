@@ -2,11 +2,12 @@
 // import database
 var db = require('../../../database/database')
 //create model/schema for table
+const bcrypt = require ("bcrypt")
 var Agents = function(Agents) {
 
 
 this.id = Agents.id;	
-this.agentsname	    = Agents.agentsname;
+this.username	    = Agents.username;
 this.email	        = Agents.email;
 this.password	    = Agents.password;
 this.created_at = new Date().toISOString().slice(0, 19).replace('T', ' ')
@@ -33,18 +34,50 @@ Agents.getResult = (result) => {
 
 //Create model
 Agents.createAgents=(EmpReqData, result)=>{
-    db.query('INSERT into agents SET ?', EmpReqData,(err,res)=>{
-        if(err)
+    console.log(EmpReqData.email)
+    const saltrounds =  10
+    const fun = async () =>{
+        const hashpassword =  await bcrypt.hash(EmpReqData.password, saltrounds)
+    console.log("hased",hashpassword)
+    EmpReqData.password = hashpassword
+    console.log("emp", EmpReqData.password)
+
+    }
+    fun()
+    setTimeout(rest,3000)
+    
+   function rest(){
+    db.query('SELECT * FROM agents where email = ?', EmpReqData.email,(err,res)=>{
+        if(res.length>0)
         {
-            console.log(err)
-            result(null,{status:false, message:err})
+            console.log(res.password)
+            result(null,{status:false, message:"User Already registered"})
         }
         else{
-            console.log("Inserted succcessfully")
-            result(null,{status:true,message:"Success"})
+            db.query('INSERT into agents SET ?', EmpReqData,(err,res)=>{
+                if(err){
+                    console.log(err)
+                    result(null,{status:false, message:"Something went wrong"})
+                }
+                else{
+                    db.query("INSERT into hash SET email_id=? , hash=''",EmpReqData.email,(err,res)=>{
+                        if(err){
+                            console.log(err)
+                            result(null,{status:false, message:"Unable to set hash for the user"})
+                        }
+                        else{
+                            console.log(res.password)
+                    console.log("Inserted succcessfully")
+            result(null,{status:true,message:"User created"})
+                        }
+                    })
+                    
+                }
+            })
         }
     })
-
+   }
+  
 }
 
 //Update Model
