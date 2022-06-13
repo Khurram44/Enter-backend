@@ -29,13 +29,14 @@ app.get("/", (req, res) => {
 
     
 // import the required routes
-// const {checkToken} = require("./src/api/auth/token_validation")
+const {checkToken} = require("./src/api/auth/token_validation")
 const userRoutes = require('./src/api/routes/Users/user')
 const authRoutes = require('./src/api/routes/Users/auth/index')
 const userRouter = require('./src/api/routes/Users/otp/userRouter');
 const resetRouter = require("./src/api/routes/Users/reset/password-reset")
 const form = require('./src/api/routes/Form/index')
 const categoryRoute =  require('./src/api/routes/Category/category')
+const agentRoute = require('./src/api/routes/Admin/User/user')
 //Create routes
 app.use('/users',  userRoutes)
 app.use('/auth', authRoutes)
@@ -43,6 +44,7 @@ app.use('/api/user', userRouter);
 app.use('/api/reset', resetRouter);
 app.use('/api/events',form)
 app.use('/api/category',categoryRoute)
+app.use('/api/agent',checkToken,agentRoute)
 // app.use('/api/cmc/market',);
 
 
