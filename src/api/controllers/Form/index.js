@@ -32,7 +32,19 @@ exports.getEventsByID= (req,res)=>{
       }
       else{
          console.log("Single Events data",Events)
-         res.send(Events)
+         let news = Events.map((e)=>{
+            e.location={
+                 latitude:e.lat,
+                 longitude:e.lon
+            }
+            delete e.lat 
+            delete e.lon
+            delete e.created_by
+            delete e.created_at
+              delete e.updated_at
+            return e
+         })
+         res.send(news)
       }
 
    })
@@ -46,7 +58,19 @@ exports.getEventsByCatID= (req,res)=>{
        }
        else{
           console.log("Single Events data",Events)
-          res.send(Events)
+          let news = Events.map((e)=>{
+            e.location={
+                 latitude:e.lat,
+                 longitude:e.lon
+            }
+            delete e.lat 
+            delete e.lon
+            delete e.created_by
+            delete e.created_at
+              delete e.updated_at
+            return e
+         })
+         res.send(news)
        }
  
     })
