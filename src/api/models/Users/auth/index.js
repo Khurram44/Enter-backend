@@ -122,7 +122,7 @@ Users.loginUsers = (EmpReqData, result) => {
                     const jsontoken = sign({ result: EmpReqData }, process.env.JWT_SECRET_KEY, {
                       expiresIn: "1h"
                     })
-                    result(null,{status:true,message:"Logged in",token:jsontoken})
+                    result(null,{status:true,message:"Logged in",token:jsontoken , id :results[0].id})
                 }else{
                 console.log(results[0].password, EmpReqData.password)
                 result(null,{status:false,message:"Incorrect password"})

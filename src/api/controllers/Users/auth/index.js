@@ -94,7 +94,7 @@ exports.LoginUser=(req,res)=>{
          }
          else{
            
-            res.json({status:true, message:emp.message,data:data.first_name,token:emp.token})
+            res.json({status:true, message:emp.message,data:emp.id,token:emp.token})
          }
       })
       console.log("valid data")
