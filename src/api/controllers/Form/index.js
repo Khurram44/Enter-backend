@@ -9,10 +9,10 @@ exports.getList = (req,res) =>{
        }
        console.log(emp)
        let news = emp.map((e)=>{
-          e.location= [{
-               lat:e.lat,
-               lng:e.lon
-          }]
+          e.location={
+               latitude:e.lat,
+               longitude:e.lon
+          }
           delete e.lat 
           delete e.lon
           delete e.created_by
