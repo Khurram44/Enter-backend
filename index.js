@@ -2,6 +2,8 @@ const express = require('express')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 const axios = require('axios')
+const multer = require("multer");
+const path = require("path");
 
 // create express app
 const app = express()
@@ -26,6 +28,21 @@ app.get('/api/cmc/market', async (req,res)=>{
 app.get("/", (req, res) => {
     res.send({status:true, message:"System is responding"});
 })
+app.use("/images", express.static(path.join(__dirname, "/images")));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  res.status(200).json("File has been uploaded");
+});
 
     
 // import the required routes
