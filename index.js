@@ -37,6 +37,7 @@ const resetRouter = require("./src/api/routes/Users/reset/password-reset")
 const form = require('./src/api/routes/Form/index')
 const categoryRoute =  require('./src/api/routes/Category/category')
 const agentRoute = require('./src/api/routes/Admin/User/user')
+const bookingRoute  = require("./src/api/routes/Booking/booking")
 //Create routes
 app.use('/users',  userRoutes)
 app.use('/auth', authRoutes)
@@ -45,6 +46,7 @@ app.use('/api/reset', resetRouter);
 app.use('/api/events',form)
 app.use('/api/category',categoryRoute)
 app.use('/api/agent',checkToken,agentRoute)
+app.use('/api/booking',bookingRoute)
 // app.use('/api/cmc/market',);
 
 

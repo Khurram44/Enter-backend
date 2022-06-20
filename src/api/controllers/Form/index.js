@@ -13,11 +13,24 @@ exports.getList = (req,res) =>{
                latitude:e.lat,
                longitude:e.lon
           }
+          e.images=[{
+               img1:e.img1,
+               img2:e.img2,
+               img3:e.img3,
+               img4:e.img4,
+               img5:e.img5
+
+          }]
           delete e.lat 
           delete e.lon
           delete e.created_by
           delete e.created_at
             delete e.updated_at
+            delete e.img1
+            delete e.img2
+            delete e.img3
+            delete e.img4
+            delete e.img5
           return e
        })
        res.send(news)
