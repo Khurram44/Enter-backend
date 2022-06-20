@@ -137,4 +137,32 @@ Users.loginUsers = (EmpReqData, result) => {
         }
     })
 }
+
+Users.loginAgents = (EmpReqData, result) => {
+    let a = db.query('SELECT * FROM agents where email = ?', EmpReqData.email,(err,results,res)=>{
+         if(results.length>0){
+             let validate
+             const validation= async ()=>{
+                 validate = await bcrypt.compare(EmpReqData.password, results[0].password)
+                 if(validate)
+                 {
+                     EmpReqData.password = undefined;
+                     const jsontoken = sign({ result: EmpReqData }, process.env.JWT_SECRET_KEY, {
+                       expiresIn: "1h"
+                     })
+                     result(null,{status:true,message:"Logged in",token:jsontoken , id :results[0].id})
+                 }else{
+                 console.log(results[0].password, EmpReqData.password)
+                 result(null,{status:false,message:"Incorrect password"})
+     }
+             }
+             validation()
+            
+         }  else{
+             
+             console.log("here",results.length)
+             result(null,{status:false, message:"User not found"})
+         }
+     })
+ }
 module.exports = Users

@@ -8,6 +8,8 @@ const express = require('express')
  router.put('/update/:email',UserController.UpdateUsers)
  router.post('/login',UserController.LoginUser)
  router.post('/email',UserController.sendEmail)
+ router.post('/agents',UserController.LoginAgents)
+
 //  router.get('/:email', UserController.getUsersByID)
 //  router.put('/pricing/:hourly_rate',UserController.updateUserPrices)
  
