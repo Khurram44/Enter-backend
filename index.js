@@ -32,10 +32,10 @@ app.use("/images", express.static(path.join(__dirname, "/images")));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    cb(null, "aaa.jpeg");
   },
   filename: (req, file, cb) => {
-    cb(null, req.body.name);
+    cb(null, "image");
   },
 });
 
@@ -62,7 +62,7 @@ app.use('/api/user', userRouter);
 app.use('/api/reset', resetRouter);
 app.use('/api/events',form)
 app.use('/api/category',categoryRoute)
-app.use('/api/agent',checkToken,agentRoute)
+app.use('/api/agent',agentRoute)
 app.use('/api/booking',bookingRoute)
 // app.use('/api/cmc/market',);
 

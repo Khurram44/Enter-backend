@@ -42,7 +42,7 @@ exports.Addbooking=(req,res)=>{
             res.send(err)
          }
          else{
-            res.json({status:true, message:"Success",data:emp.InsertId})
+            res.json({status:true, message:emp.message,data:emp.InsertId})
          }
       })
       console.log("valid data")
