@@ -18,6 +18,7 @@ this.end    = Events.end;
 this.price	    = Events.price;
 this.date	    = Events.date;
 this.place	    = Events.place;
+this.contact_email  = Events.contact_email;
 this.flag = Events.flag;
 this.img1 = Events.img1;
 this.img2 = Events.img2;
