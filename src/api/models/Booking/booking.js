@@ -6,6 +6,7 @@ var booking = function (booking) {
 
 
     this.id = booking.id;
+    this.order_no = booking.order_no;
     this.event_id = booking.event_id;
     this.user_id = booking.user_id;
     this.user_name = booking.user_name;
