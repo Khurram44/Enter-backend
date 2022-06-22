@@ -53,7 +53,7 @@ booking.getbookingByID = (id, result) => {
 }
 
 booking.getbookingByCatID = (id, result) => {
-    db.query('SELECT * from booking WHERE category=?', id, (err, res) => {
+    db.query('SELECT * from booking WHERE  user_id = ?', id, (err, res) => {
         if (err) {
             console.log("error while fetching")
             result(null, err)

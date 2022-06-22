@@ -25,7 +25,19 @@ exports.getbookingByID= (req,res)=>{
 
    })
 }
+exports.getbookingByCatID= (req,res)=>{
+   module.getbookingByCatID(req.params.user_id,(err,booking)=>{
+      if(err)
+      {
+         res.send(err)
+      }
+      else{
+         console.log("Single booking data",booking)
+         res.send(booking)
+      }
 
+   })
+}
 
 exports.Addbooking=(req,res)=>{
    const data = new module(req.body)   
