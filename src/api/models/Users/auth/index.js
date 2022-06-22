@@ -10,6 +10,7 @@ this.id = users.id;
 this.email = users.email;
 this.user_name = users.user_name;
 this.password   = users.password;
+this.phone =  users.phone;
 this.created_at = new Date().toISOString().slice(0, 19).replace('T', ' ')
 this.updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ')
 
