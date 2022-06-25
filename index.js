@@ -32,10 +32,10 @@ app.use("/images", express.static(path.join(__dirname, "/images")));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "aaa.jpeg");
+    cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, "image");
+    cb(null, req.body.name);
   },
 });
 
