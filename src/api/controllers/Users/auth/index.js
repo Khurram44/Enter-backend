@@ -94,7 +94,7 @@ exports.LoginUser=(req,res)=>{
          }
          else{
            
-            res.json({status:true, message:emp.message,data:emp.id,token:emp.token})
+            res.json({status:true, message:emp.message,data:{id:emp.id , name:emp.user_name , email:emp.email , phone:emp.phone},token:emp.token})
          }
       })
       console.log("valid data")
@@ -117,7 +117,7 @@ exports.LoginAgents=(req,res)=>{
          }
          else{
            
-            res.json({status:true, message:emp.message,data:emp.id,token:emp.token})
+            res.json({status:true, message:emp.message,data:emp.data,token:emp.token})
          }
       })
       console.log("valid data")
