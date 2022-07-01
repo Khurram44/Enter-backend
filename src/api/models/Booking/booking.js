@@ -1,5 +1,7 @@
 // import database
 var db = require('../../database/database')
+var nodemailer = require('nodemailer');
+
 //create model/schema for table
 var booking = function (booking) {
 
@@ -22,7 +24,41 @@ var booking = function (booking) {
     this.updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 }
+const sendNewMail=(email,seats,name,venue,date)=>{
+    console.log(email,seats,name,venue,date)
 
+    let transporter = nodemailer.createTransport({
+       host: process.env.HOST,
+       port: 465,
+       secure: true,
+       requireTLS: true,
+       auth: {
+           user: process.env.EMAIL,
+           pass: process.env.PASSWORD
+       }
+    });
+    
+    let mailOptions = {
+       from: process.env.EMAIL,
+       to: email,
+       subject: 'New Booking Request',
+       html : `<div>
+          <h1>B-Enter got new booking request for you</h1>
+          <p>We're looking for ${seats} for the event <h3>${name}</h3>  DATED : ${date}</p>
+            <p>Please reply this email to approve or reject the request</p>
+          
+       </div>`
+    };
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+       if (error) {
+           return console.log(error.message);
+       }
+       console.log('success');
+    });
+    
+ }
+ 
 //Get booking model
 booking.getResult = (result) => {
     db.query('SELECT * from booking', (err, res) => {
@@ -74,14 +110,14 @@ booking.createbooking = (EmpReqData, result) => {
             result(null, { status: false, message: err })
         }
         else {
-            db.query('SELECT capacity from events WHERE id=?', [EmpReqData.event_id], (err, res) => {
+            db.query('SELECT * from events WHERE id=?', [EmpReqData.event_id], (err, resp) => {
                 if (err) {
                     console.log(err)
                     result(null, { status: false, message: err })
                 }
                 else {
-                    console.log(res[0].capacity - EmpReqData.seats)
-                    let seats = res[0].capacity - EmpReqData.seats
+                    console.log(resp[0].capacity - EmpReqData.seats)
+                    let seats = resp[0].capacity - EmpReqData.seats
 
                     db.query(`UPDATE events SET capacity=?, updated_at = ? WHERE    id=?`,
                         [
@@ -94,6 +130,7 @@ booking.createbooking = (EmpReqData, result) => {
                                 }
                                 else {
                                     console.log("success")
+                                    sendNewMail(resp[0].contact_email , EmpReqData.seats,resp[0].title,EmpReqData.venue,EmpReqData.date)
                                     result(null, { status: true, message: "Event was Successfully booked", id: res.id })
                                 }
                             })

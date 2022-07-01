@@ -55,6 +55,9 @@ const form = require('./src/api/routes/Form/index')
 const categoryRoute =  require('./src/api/routes/Category/category')
 const agentRoute = require('./src/api/routes/Admin/User/user')
 const bookingRoute  = require("./src/api/routes/Booking/booking")
+var nodemailer = require('nodemailer');
+
+
 //Create routes
 app.use('/users',  userRoutes)
 app.use('/auth', authRoutes)

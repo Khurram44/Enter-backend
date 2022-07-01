@@ -22,8 +22,7 @@ const sendNewMail=(email,sethash)=>{
     let transporter = nodemailer.createTransport({
        host: process.env.HOST,
        port: 587,
-       service: 'gmail',
-       secure: true,
+       secure: false,
        requireTLS: true,
        auth: {
            user: process.env.EMAIL,
