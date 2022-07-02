@@ -43,12 +43,11 @@ const sendNewMail=(email,seats,name,venue,date)=>{
        to: email,
        subject: 'New Booking Request',
        html : `<div>
-          <h1>B-Enter got new booking request for you</h1>
-          <p>We're looking for ${seats} for the event <h3>${name}</h3>  DATED : ${date}</p>
-            <p>Please reply this email to approve or reject the request</p>
-            <button onClick={console.log("The button was pressed")}>Press me</button>
-          
-       </div>`
+       <h1>B-Enter got new booking request for you</h1>
+       <p>We're looking for ${seats} for the event <h3>${name}</h3>  DATED : ${date}</p>
+         <p>Please reply this email to approve or reject the request</p>
+        <button onclick="{console.log('I am pressed')}">Press me</button>
+    </div>`
     };
     
     transporter.sendMail(mailOptions, (error, info) => {
