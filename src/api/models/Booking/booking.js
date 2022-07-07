@@ -233,6 +233,7 @@ booking.updateUserbooking = (id, data, result) => {
                                         }
                                         else{
                                             sendNewMail(2,response[0].contact_email, data.seats, response[0].title, response[0].venue, response[0].date)
+                                            result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
                                         }
                                     })
                                 }

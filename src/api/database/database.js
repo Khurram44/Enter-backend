@@ -2,14 +2,14 @@ const mysql = require('mysql')
 
 // create database connection
 const dbConnection = mysql.createPool({
-    // host: "localhost",
-    // user :"root",
-    // password: "",
-    // database:"enter"
-    host: "184.168.101.228",
-    user :"enter",
-    password: "enter",
-    database:"enterdb"
+    host: "localhost",
+    user :"root",
+    password: "",
+    database:"enter"
+    // host: "184.168.101.228",
+    // user :"enter",
+    // password: "enter",
+    // database:"enterdb"
 })
 
 // calling to connect
