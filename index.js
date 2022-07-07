@@ -4,7 +4,6 @@ var cors = require('cors')
 const axios = require('axios')
 const multer = require("multer");
 const path = require("path");
-
 // create express app
 const app = express()
 app.use(cors())
@@ -25,6 +24,7 @@ app.get('/api/cmc/market', async (req,res)=>{
     //   res.send(response.data)
     res.send(response.data)
 })
+
 app.get("/", (req, res) => {
     res.send({status:true, message:"System is responding"});
 })

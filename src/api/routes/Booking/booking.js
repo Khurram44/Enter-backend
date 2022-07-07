@@ -10,6 +10,7 @@ const express = require('express')
  router.post('/',UserController.Addbooking)
  router.delete('/delete/:id',UserController.deletebooking)
  router.put('/update/:id',UserController.Updatebooking)
+ router.put('/update/user/:id',UserController.UpdateUserbooking)
  router.put('/has-account/:email',UserController.updateAccount)
  
  //export router for getting access
