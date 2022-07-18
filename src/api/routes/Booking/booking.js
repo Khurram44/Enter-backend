@@ -5,7 +5,7 @@ const express = require('express')
  //import employee controller
  const UserController = require("../../controllers/Booking/booking");
  router.get('/', UserController.getList)
- router.get('/:email',UserController.getbookingByID)
+ router.get('/:id',UserController.getbookingByID)
  router.get('/Id/:user_id',UserController.getbookingByCatID)
  router.post('/',UserController.Addbooking)
  router.delete('/delete/:id',UserController.deletebooking)

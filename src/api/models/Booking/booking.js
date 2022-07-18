@@ -38,7 +38,7 @@ var booking = function (booking) {
     this.updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 }
-const sendNewMail = (id,email, seats, name, venue, date) => {
+const sendNewMail = (id, email, seats, name, venue, date) => {
     console.log(email, seats, name, venue, date)
 
     let transporter = nodemailer.createTransport({
@@ -52,20 +52,20 @@ const sendNewMail = (id,email, seats, name, venue, date) => {
         }
     });
     let mailOptions
-if(id == 2){
-    mailOptions = {
-        from: process.env.EMAIL,
-        to: email,
-        subject: 'Booking Update request',
-        html: `<div>
+    if (id == 2) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Booking Update request',
+            html: `<div>
        <h1>B-Enter got new booking request for you</h1>
        <p>We're looking for ${seats} for the event <h3>${name}</h3>  DATED : ${date}</p>
          <p>Please reply this email to approve or reject the request</p>
          <button><a href=${`http://localhost:3000/${hash}`} target="_blank" >Accept</a></button>
     </div>`
+        }
     }
-}
-    else if(id == 1){
+    else if (id == 1) {
         mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -86,8 +86,9 @@ if(id == 2){
             return console.log(error.message);
         }
         console.log('success');
-    });}
-   
+    });
+}
+
 
 
 
@@ -101,8 +102,17 @@ booking.getResult = (result) => {
             result(null, err)
         }
         else {
-            console.log('fetched successfully', res)
-            result(null, res)
+            console.log("ID", res[0].event_id)
+            db.query('SELECT * from events ', (err, resp) => {
+                if (err) {
+                    console.log('error while fetching', err)
+                    result(null, err)
+                }
+                else {
+                    console.log('selected')
+                    result(null, res, resp)
+                }
+            })
         }
     })
 }
@@ -116,8 +126,16 @@ booking.getbookingByID = (id, result) => {
 
         }
         else {
-            console.log("selected by ID")
-            result(null, res)
+            db.query('SELECT * from events WHERE id = ? ',res[0].event_id, (err, resp) => {
+                if (err) {
+                    console.log('error while fetching', err)
+                    result(null, err)
+                }
+                else {
+                    console.log('selected')
+                    result(null, res, resp)
+                }
+            })
         }
     })
 }
@@ -130,8 +148,16 @@ booking.getbookingByCatID = (id, result) => {
 
         }
         else {
-            console.log("selected by ID")
-            result(null, res)
+            db.query('SELECT * from events  ', (err, resp) => {
+                if (err) {
+                    console.log('error while fetching', err)
+                    result(null, err)
+                }
+                else {
+                    console.log('selected')
+                    result(null, res, resp)
+                }
+            })
         }
     })
 }
@@ -223,16 +249,16 @@ booking.updateUserbooking = (id, data, result) => {
                                 }
                                 else {
                                     console.log("success")
-                                    console.log("resp",resp[0].email)
-                                    console.log("res",res)
-                                    sendNewMail(1,resp[0].email, data.seats, "", "", "")
+                                    console.log("resp", resp[0].email)
+                                    console.log("res", res)
+                                    sendNewMail(1, resp[0].email, data.seats, "", "", "")
                                     db.query('SELECT * from events WHERE id=?', [res[0].event_id], (err, response) => {
-                                        if(err){
+                                        if (err) {
                                             console.log(err)
                                             result(null, err)
                                         }
-                                        else{
-                                            sendNewMail(2,response[0].contact_email, data.seats, response[0].title, response[0].venue, response[0].date)
+                                        else {
+                                            sendNewMail(2, response[0].contact_email, data.seats, response[0].title, response[0].venue, response[0].date)
                                             result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
                                         }
                                     })

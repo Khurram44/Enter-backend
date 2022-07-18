@@ -2,38 +2,219 @@ var module = require('../../models/Booking/booking')
 
 exports.getList = (req,res) =>{
    console.log("complete list here")
-   module.getResult((err,emp)=>{
+   module.getResult((err,emp , resp)=>{
        if(err)
        {
           res.send(err)
        }
-       console.log(emp)
-       res.send(emp)
+      
+       let news = emp.map((e)=>{
+        
+         resp.map((r)=>{
+            if(e.event_id == r.id)
+            {
+              e.event_details=[{
+               title:r.title,
+               time_in:r.start,
+               time_out:r.end,
+               event_date:r.date,
+               event_name:r.name,
+               contact_details:r.contact_email,
+               
+               address:{
+                  location:{
+                     latitude:r.lat,
+                     longitude:r.lon
+                  }
+               }
+              },
+           ]
+
+         }
+         else{
+            e.event_details=[{
+               time_in:null,
+               time_out:null,
+               event_date:null,
+               event_name:null,
+               contact_details:null,
+
+              }]
+         }
+         })
+         e.images=[{
+              img1:e.img1,
+              img2:e.img2,
+              img3:e.img3,
+              img4:e.img4,
+              img5:e.img5
+
+         }]
+         delete e.lat 
+         delete e.lon
+         delete e.created_by
+         delete e.created_at
+           delete e.updated_at
+           delete e.img1
+           delete e.img2
+           delete e.img3
+           delete e.img4
+           delete e.img5
+           delete e.time_in,
+             delete e.time_out,
+               delete e.date,
+
+               delete e.event_name,
+               delete e.contact_email
+
+         return e
+      })
+      res.send(news)
    })
 }
 
 exports.getbookingByID= (req,res)=>{
-   module.getbookingByID(req.params.email,(err,booking)=>{
+   module.getbookingByID(req.params.id,(err,emp,resp)=>{
       if(err)
       {
          res.send(err)
       }
       else{
-         console.log("Single booking data",booking)
-         res.send(booking)
+         let news = emp.map((e)=>{
+        
+            resp.map((r)=>{
+               if(e.event_id == r.id)
+               {
+                 e.event_details=[{
+                  title:r.title,
+                  time_in:r.start,
+                  time_out:r.end,
+                  event_date:r.date,
+                  event_name:r.name,
+                  contact_details:r.contact_email,
+                  
+                  address:{
+                     location:{
+                        latitude:r.lat,
+                        longitude:r.lon
+                     }
+                  }
+                 },
+              ]
+   
+            }
+            else{
+               e.event_details=[{
+                  time_in:null,
+                  time_out:null,
+                  event_date:null,
+                  event_name:null,
+                  contact_details:null,
+   
+                 }]
+            }
+            })
+            e.images=[{
+                 img1:e.img1,
+                 img2:e.img2,
+                 img3:e.img3,
+                 img4:e.img4,
+                 img5:e.img5
+   
+            }]
+            delete e.lat 
+            delete e.lon
+            delete e.created_by
+            delete e.created_at
+              delete e.updated_at
+              delete e.img1
+              delete e.img2
+              delete e.img3
+              delete e.img4
+              delete e.img5
+              delete e.time_in,
+                delete e.time_out,
+                  delete e.date,
+   
+                  delete e.event_name,
+                  delete e.contact_email
+   
+            return e
+         })
+         res.send(news)
       }
 
    })
 }
 exports.getbookingByCatID= (req,res)=>{
-   module.getbookingByCatID(req.params.user_id,(err,booking)=>{
+   module.getbookingByCatID(req.params.user_id,(err,emp,resp)=>{
       if(err)
       {
          res.send(err)
       }
       else{
-         console.log("Single booking data",booking)
-         res.send(booking)
+         let news = emp.map((e)=>{
+        
+            resp.map((r)=>{
+               if(e.event_id == r.id)
+               {
+                 e.event_details=[{
+                  title:r.title,
+                  time_in:r.start,
+                  time_out:r.end,
+                  event_date:r.date,
+                  event_name:r.name,
+                  contact_details:r.contact_email,
+                  
+                  address:{
+                     location:{
+                        latitude:r.lat,
+                        longitude:r.lon
+                     }
+                  }
+                 },
+              ]
+   
+            }
+            else{
+               e.event_details=[{
+                  time_in:null,
+                  time_out:null,
+                  event_date:null,
+                  event_name:null,
+                  contact_details:null,
+   
+                 }]
+            }
+            })
+            e.images=[{
+                 img1:e.img1,
+                 img2:e.img2,
+                 img3:e.img3,
+                 img4:e.img4,
+                 img5:e.img5
+   
+            }]
+            delete e.lat 
+            delete e.lon
+            delete e.created_by
+            delete e.created_at
+              delete e.updated_at
+              delete e.img1
+              delete e.img2
+              delete e.img3
+              delete e.img4
+              delete e.img5
+              delete e.time_in,
+                delete e.time_out,
+                  delete e.date,
+   
+                  delete e.event_name,
+                  delete e.contact_email
+   
+            return e
+         })
+         res.send(news)
       }
 
    })
