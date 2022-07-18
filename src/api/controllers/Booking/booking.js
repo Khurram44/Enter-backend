@@ -80,6 +80,10 @@ exports.getbookingByID= (req,res)=>{
          res.send(err)
       }
       else{
+         if (emp === null) {
+            res.send({success:false,message:"No data found"})
+         }
+         else{
          let news = emp.map((e)=>{
         
             resp.map((r)=>{
@@ -143,6 +147,7 @@ exports.getbookingByID= (req,res)=>{
          })
          res.send(news)
       }
+   }
 
    })
 }
@@ -153,6 +158,10 @@ exports.getbookingByCatID= (req,res)=>{
          res.send(err)
       }
       else{
+        if (emp === null) {
+         res.send({success:false,message:"No data found"})
+        }
+        else{
          let news = emp.map((e)=>{
         
             resp.map((r)=>{
@@ -216,6 +225,7 @@ exports.getbookingByCatID= (req,res)=>{
          })
          res.send(news)
       }
+   }
 
    })
 }

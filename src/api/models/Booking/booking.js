@@ -126,16 +126,21 @@ booking.getbookingByID = (id, result) => {
 
         }
         else {
-            db.query('SELECT * from events WHERE id = ? ',res[0].event_id, (err, resp) => {
-                if (err) {
-                    console.log('error while fetching', err)
-                    result(null, err)
-                }
-                else {
-                    console.log('selected')
-                    result(null, res, resp)
-                }
-            })
+            if(res.length > 0){
+                db.query('SELECT * from events WHERE id = ? ',res[0].event_id, (err, resp) => {
+                    if (err) {
+                        console.log('error while fetching', err)
+                        result(null, err)
+                    }
+                    else {
+                        console.log('selected')
+                        result(null, res, resp)
+                    }
+                })
+            }
+            else{
+                result(null, null)
+            }
         }
     })
 }
@@ -148,6 +153,8 @@ booking.getbookingByCatID = (id, result) => {
 
         }
         else {
+            
+            if(res.length>1){
             db.query('SELECT * from events  ', (err, resp) => {
                 if (err) {
                     console.log('error while fetching', err)
@@ -159,6 +166,10 @@ booking.getbookingByCatID = (id, result) => {
                 }
             })
         }
+        else{
+            result(null, null)
+        }
+    }
     })
 }
 
