@@ -96,7 +96,7 @@ const sendNewMail = (id, email, seats, name, venue, date) => {
 // id,order_no,event_id,user_id,category,user_name,seats,price_per_seat,total_price,date,time_in,time_out,status,created_at,updated_at
 //Get booking model
 booking.getResult = (result) => {
-    db.query('SELECT id,order_no,event_id,user_id,category,user_name,seats,price_per_seat,total_price,date,time_in,time_out,status,created_at,updated_at from booking', (err, res) => {
+    db.query('SELECT * from booking', (err, res) => {
         if (err) {
             console.log('error while fetching', err)
             result(null, err)
@@ -119,7 +119,7 @@ booking.getResult = (result) => {
 
 //Get booking by ID model
 booking.getbookingByID = (id, result) => {
-    db.query('SELECT id,order_no,event_id,user_id,category,user_name,seats,price_per_seat,total_price,date,time_in,time_out,status,created_at,updated_at from booking WHERE id=?', id, (err, res) => {
+    db.query('SELECT * from booking WHERE id=?', id, (err, res) => {
         if (err) {
             console.log("error while fetching")
             result(null, err)
