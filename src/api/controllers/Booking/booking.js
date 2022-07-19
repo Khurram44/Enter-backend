@@ -13,16 +13,16 @@ exports.getList = (req, res) => {
             if (e.event_id == r.id) {
 
                e.title = r.title,
-                  e.time_in = r.start,
-                  e.time_out = r.end,
+                  e.time_inn = r.start,
+                  e.time_outt = r.end,
                   e.event_date = r.date,
                   e.event_name = r.name,
                   e.contact_details = r.contact_email
             }
             else {
 
-               e.time_in = null,
-                  e.time_out = null,
+               e.time_inn = null,
+                  e.time_outt = null,
                   e.event_date = null,
                   e.event_name = null,
                   e.contact_details = null
@@ -36,8 +36,8 @@ exports.getList = (req, res) => {
          delete e.created_by
          delete e.created_at
          delete e.updated_at
-         delete e.time_in,
-            delete e.time_out,
+         delete e.time_inn,
+            delete e.time_outt,
             delete e.date,
 
             delete e.event_name,
@@ -65,16 +65,16 @@ exports.getbookingByID = (req, res) => {
                   if (e.event_id == r.id) {
       
                      e.title = r.title,
-                        e.time_in = r.start,
-                        e.time_out = r.end,
+                        e.time_inn = r.start,
+                        e.time_outt = r.end,
                         e.event_date = r.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
                   }
                   else {
       
-                     e.time_in = null,
-                        e.time_out = null,
+                     e.time_inn = null,
+                        e.time_outt = null,
                         e.event_date = null,
                         e.event_name = null,
                         e.contact_details = null
@@ -88,8 +88,8 @@ exports.getbookingByID = (req, res) => {
                delete e.created_by
                delete e.created_at
                delete e.updated_at
-               delete e.time_in,
-                  delete e.time_out,
+               delete e.time_inn,
+                  delete e.time_outt,
                   delete e.date,
       
                   delete e.event_name,
@@ -120,16 +120,16 @@ exports.getbookingByCatID = (req, res) => {
                   if (e.event_id == r.id) {
       
                      e.title = r.title,
-                        e.time_in = r.start,
-                        e.time_out = r.end,
+                        e.time_inn = r.start,
+                        e.time_outt = r.end,
                         e.event_date = r.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
                   }
                   else {
       
-                     e.time_in = null,
-                        e.time_out = null,
+                     e.time_inn = null,
+                        e.time_outt = null,
                         e.event_date = null,
                         e.event_name = null,
                         e.contact_details = null
@@ -143,8 +143,8 @@ exports.getbookingByCatID = (req, res) => {
                delete e.created_by
                delete e.created_at
                delete e.updated_at
-               delete e.time_in,
-                  delete e.time_out,
+               delete e.time_inn,
+                  delete e.time_outt,
                   delete e.date,
                   delete e.hash
                   delete e.event_name,
