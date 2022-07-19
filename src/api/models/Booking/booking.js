@@ -154,7 +154,7 @@ booking.getbookingByCatID = (id, result) => {
         }
         else {
             
-            if(res.length>1){
+            if(res.length>0){
             db.query('SELECT * from events  ', (err, resp) => {
                 if (err) {
                     console.log('error while fetching', err)
