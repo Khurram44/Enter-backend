@@ -95,9 +95,9 @@ Events.createEvents=(EmpReqData, result)=>{
 //Update Model
 Events.updateEvents=(id,data,result)=>{
 
-    db.query('UPDATE events SET title = ? , category = ? , subTitle = ? , venue = ? , address = ? , lat = ? , lon = ? , start = ? , end = ? , price = ? , date = ? , place = ? , flag = ? , updated_at = ? WHERE    id=?',
+    db.query('UPDATE events SET title = ? , category = ? , subTitle = ? , venue = ? , address = ? , lat = ? , lon = ? , start = ? , end = ? , price = ? , date = ? , place = ? , flag = ?, contact_email=? , updated_at = ? WHERE    id=?',
     [
-data.title , data.category , data.subTitle , data.venue , data.address , data.lat , data.lon , data.start , data.end , data.price , data.date , data.place , data.flag , data.updated_at
+data.title , data.category , data.subTitle , data.venue , data.address , data.lat , data.lon , data.start , data.end , data.price , data.date , data.place , data.flag ,data.contact_email, new Date().toISOString().slice(0, 19).replace('T', ' ')
 
 , id    ],(err,res)=>{
         if(err)
