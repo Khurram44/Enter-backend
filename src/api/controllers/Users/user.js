@@ -100,7 +100,103 @@ exports.updateAccount=(req,res)=>{
    }
 
 }
+//Suspend Account
+exports.updateSuspend=(req,res)=>{
 
+   const data = new module(req.body)   
+   console.log("request data", req.body)
+
+   if(req.body.constructor === Object && Object.keys(req.body).length===0)
+   {
+      res.send(400).send({success:false,message:"Please fill up all the fields"})
+   }
+   else{
+      module.updateSuspend(req.params.id,data,(err,emp)=>{
+         if(err)
+         {
+            res.send(err)
+         }
+         else{
+            res.json({status:true, message:"Success",data:emp.InsertId})
+         }
+      })
+      console.log("valid data")
+   }
+
+}
+exports.removeSuspend=(req,res)=>{
+
+   const data = new module(req.body)   
+   console.log("request data", req.body)
+
+   if(req.body.constructor === Object && Object.keys(req.body).length===0)
+   {
+      res.send(400).send({success:false,message:"Please fill up all the fields"})
+   }
+   else{
+      module.removeSuspend(req.params.id,data,(err,emp)=>{
+         if(err)
+         {
+            res.send(err)
+         }
+         else{
+            res.json({status:true, message:"Success",data:emp.InsertId})
+         }
+      })
+      console.log("valid data")
+   }
+
+}
+
+//Update delete
+exports.updateDelete=(req,res)=>{
+
+   const data = new module(req.body)   
+   console.log("request data", req.body)
+
+   if(req.body.constructor === Object && Object.keys(req.body).length===0)
+   {
+      res.send(400).send({success:false,message:"Please fill up all the fields"})
+   }
+   else{
+      module.updateDelete(req.params.id,data,(err,emp)=>{
+         if(err)
+         {
+            res.send(err)
+         }
+         else{
+            res.json({status:true, message:"Success",data:emp.InsertId})
+         }
+      })
+      console.log("valid data")
+   }
+
+}
+
+//Restore account
+exports.restoreDelete=(req,res)=>{
+
+   const data = new module(req.body)   
+   console.log("request data", req.body)
+
+   if(req.body.constructor === Object && Object.keys(req.body).length===0)
+   {
+      res.send(400).send({success:false,message:"Please fill up all the fields"})
+   }
+   else{
+      module.restoreDelete(req.params.id,data,(err,emp)=>{
+         if(err)
+         {
+            res.send(err)
+         }
+         else{
+            res.json({status:true, message:"Success",data:emp.InsertId})
+         }
+      })
+      console.log("valid data")
+   }
+
+}
 // Delete Users
 
 exports.deleteUsers = (req,res) =>{

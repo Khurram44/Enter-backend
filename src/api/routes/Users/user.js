@@ -9,6 +9,10 @@ const express = require('express')
   router.post('/',UserController.AddUsers)
  router.delete('/delete/:id',UserController.deleteUsers)
  router.put('/update/:email',UserController.UpdateUsers)
+ router.put('/suspend/:id',UserController.updateSuspend)
+ router.put('/remsuspend/:id',UserController.removeSuspend)
+ router.put('/del/:id',UserController.updateDelete)
+ router.put('/restore/:id',UserController.restoreDelete)
  router.put('/has-account/:email',UserController.updateAccount)
  
  //export router for getting access

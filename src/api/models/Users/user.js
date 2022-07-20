@@ -99,6 +99,81 @@ Users.updateAccount=(id,data,result)=>{
 
 }
 
+// Suspend Account
+Users.updateSuspend=(id,data,result)=>{
+
+    db.query('UPDATE user SET is_suspended = 1 , is_active = 1 WHERE id=?',
+    [id],(err,res)=>{
+        if(err)
+        {
+            console.log(err)
+            result(null,err)
+        }
+        else
+        {
+            console.log("success")
+            result(null,{status:true,message:"UPDATED",id:res.id})
+        }
+    })
+
+}
+
+//Remove suspended account
+Users.removeSuspend=(id,data,result)=>{
+
+    db.query('UPDATE user SET is_suspended = 0 , is_active = 0 WHERE id=?',
+    [id],(err,res)=>{
+        if(err)
+        {
+            console.log(err)
+            result(null,err)
+        }
+        else
+        {
+            console.log("success")
+            result(null,{status:true,message:"UPDATED",id:res.id})
+        }
+    })
+
+}
+
+//Delete Account
+Users.updateDelete=(id,data,result)=>{
+
+    db.query('UPDATE user SET is_deleted = 1 , is_active = 1 WHERE id=?',
+    [id],(err,res)=>{
+        if(err)
+        {
+            console.log(err)
+            result(null,err)
+        }
+        else
+        {
+            console.log("success")
+            result(null,{status:true,message:"UPDATED",id:res.id})
+        }
+    })
+
+}
+
+//Restore account
+Users.restoreDelete=(id,data,result)=>{
+
+    db.query('UPDATE user SET is_deleted = 0 , is_active = 0 WHERE id=?',
+    [id],(err,res)=>{
+        if(err)
+        {
+            console.log(err)
+            result(null,err)
+        }
+        else
+        {
+            console.log("success")
+            result(null,{status:true,message:"UPDATED",id:res.id})
+        }
+    })
+
+}
 //Delete model
 Users.deleteUsers = (id,result)=>{
     db.query('DELETE FROM user WHERE id=?',[id],(err,res)=>{
