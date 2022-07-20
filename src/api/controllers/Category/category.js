@@ -61,7 +61,7 @@ exports.Updatecategory=(req,res)=>{
       res.send(400).send({success:false,message:"Please fill up all the fields"})
    }
    else{
-      module.updatecategory(req.params.email,data,(err,emp)=>{
+      module.updatecategory(req.params.id,data,(err,emp)=>{
          if(err)
          {
             res.send(err)

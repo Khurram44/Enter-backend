@@ -62,8 +62,8 @@ category.createcategory=(EmpReqData, result)=>{
 //Update Model
 category.updatecategory=(id,data,result)=>{
 
-    db.query('UPDATE category SET is_verified = 1 WHERE email=?',
-    [id],(err,res)=>{
+    db.query('UPDATE category SET name = ? WHERE id=?',
+    [data.name,id],(err,res)=>{
         if(err)
         {
             console.log(err)
