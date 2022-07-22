@@ -11,9 +11,9 @@ exports.getList = (req, res) => {
 
          resp.map((r) => {
             // console.log("start",r.is_selectable)
-            if(r.is_selectable == 0){
-            if (e.event_id == r.id) {
-               console.log("start", r.start)
+            if(e.event_id == r.id){
+            if (r.is_selectable == 0) {
+               console.log("start", r.title)
 
                e.title = r.title,
                e.start = r.start,
@@ -21,8 +21,19 @@ exports.getList = (req, res) => {
                e.event_date = r.date,
                e.event_name = r.name,
                e.contact_details = r.contact_email
-               console.log("start", e.start)
+              
 
+            }
+            else if (r.is_selectable == 1) {
+               e.title = r.title,
+               e.start = e.time_in,
+               e.end = e.time_out,
+               e.event_date = e.date,
+               e.event_name = r.name,
+               e.contact_details = r.contact_email
+
+            }
+           
             }
             // else {
 
@@ -34,16 +45,7 @@ exports.getList = (req, res) => {
 
 
             // }
-            }
-            else if (r.is_selectable == 1) {
-               e.title = r.title,
-               e.start = e.time_in,
-               e.end = e.time_out,
-               e.event_date = e.date,
-               e.event_name = r.name,
-               e.contact_details = r.contact_email
-
-            }
+           
          })
 
          delete e.lat
