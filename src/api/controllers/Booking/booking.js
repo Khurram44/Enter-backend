@@ -102,6 +102,7 @@ exports.getbookingByID = (req, res) => {
                      // }
                      }
                      else if (r.is_selectable == 1) {
+                        e,title = r.title,
                         e.start = e.time_in,
                         e.end = e.time_out,
                         e.event_date = e.date,
@@ -170,6 +171,7 @@ exports.getbookingByCatID = (req, res) => {
                      // }
                      }
                      else if (r.is_selectable == 1) {
+                        e.title = r.title,
                         e.start = e.time_in,
                         e.end = e.time_out,
                         e.event_date = e.date,
