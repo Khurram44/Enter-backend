@@ -79,9 +79,9 @@ exports.getbookingByID = (req, res) => {
             let news = emp.map((e) => {
 
                resp.map((r) => {
-                  if(r.is_selectable == 0){
-                     if (e.event_id == r.id) {
-                        console.log("start", r.start)
+                  if(e.event_id == r.id){
+                     if (r.is_selectable == 0) {
+                        console.log("start", r.title)
          
                         e.title = r.title,
                         e.start = r.start,
@@ -89,28 +89,19 @@ exports.getbookingByID = (req, res) => {
                         e.event_date = r.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
-                        console.log("start", e.start)
+                       
          
-                     }
-                     // else {
-         
-                     //    e.start = null,
-                     //       e.end = null,
-                     //       e.event_date = null,
-                     //       e.event_name = null,
-                     //       e.contact_details = null
-         
-         
-                     // }
                      }
                      else if (r.is_selectable == 1) {
-                        e,title = r.title,
+                        e.title = r.title,
                         e.start = e.time_in,
                         e.end = e.time_out,
                         e.event_date = e.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
          
+                     }
+                    
                      }
                })
 
@@ -148,9 +139,9 @@ exports.getbookingByCatID = (req, res) => {
             let news = emp.map((e) => {
 
                resp.map((r) => {
-                  if(r.is_selectable == 0){
-                     if (e.event_id == r.id) {
-                        console.log("start", r.start)
+                  if(e.event_id == r.id){
+                     if (r.is_selectable == 0) {
+                        console.log("start", r.title)
          
                         e.title = r.title,
                         e.start = r.start,
@@ -158,19 +149,8 @@ exports.getbookingByCatID = (req, res) => {
                         e.event_date = r.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
-                        console.log("start", e.start)
+                       
          
-                     }
-                     // else {
-         
-                     //    e.start = null,
-                     //       e.end = null,
-                     //       e.event_date = null,
-                     //       e.event_name = null,
-                     //       e.contact_details = null
-         
-         
-                     // }
                      }
                      else if (r.is_selectable == 1) {
                         e.title = r.title,
@@ -180,6 +160,8 @@ exports.getbookingByCatID = (req, res) => {
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
          
+                     }
+                    
                      }
                })
 
