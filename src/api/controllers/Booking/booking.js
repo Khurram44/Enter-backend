@@ -10,23 +10,37 @@ exports.getList = (req, res) => {
       let news = emp.map((e) => {
 
          resp.map((r) => {
+            // console.log("start",r.is_selectable)
+            if(r.is_selectable == 0){
             if (e.event_id == r.id) {
+               console.log("start", r.start)
 
                e.title = r.title,
-                  e.start = r.start,
-                  e.end = r.end,
-                  e.event_date = r.date,
-                  e.event_name = r.name,
-                  e.contact_details = r.contact_email
+               e.start = r.start,
+               e.end = r.end,
+               e.event_date = r.date,
+               e.event_name = r.name,
+               e.contact_details = r.contact_email
+               console.log("start", e.start)
+
             }
-            else {
+            // else {
 
-               e.start = null,
-                  e.end = null,
-                  e.event_date = null,
-                  e.event_name = null,
-                  e.contact_details = null
+            //    e.start = null,
+            //       e.end = null,
+            //       e.event_date = null,
+            //       e.event_name = null,
+            //       e.contact_details = null
 
+
+            // }
+            }
+            else if (r.is_selectable == 1) {
+               e.start = e.time_in,
+               e.end = e.time_out,
+               e.event_date = e.date,
+               e.event_name = r.name,
+               e.contact_details = r.contact_email
 
             }
          })
@@ -62,28 +76,40 @@ exports.getbookingByID = (req, res) => {
             let news = emp.map((e) => {
 
                resp.map((r) => {
-                  if (e.event_id == r.id) {
-                     console.log("start",r.start)
-      
-                     e.title = r.title,
+                  if(r.is_selectable == 0){
+                     if (e.event_id == r.id) {
+                        console.log("start", r.start)
+         
+                        e.title = r.title,
                         e.start = r.start,
                         e.end = r.end,
                         e.event_date = r.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
-                  }
-                  else {
-      
-                     e.end = null,
-                        e.start = null,
-                        e.event_date = null,
-                        e.event_name = null,
-                        e.contact_details = null
-      
-      
-                  }
+                        console.log("start", e.start)
+         
+                     }
+                     // else {
+         
+                     //    e.start = null,
+                     //       e.end = null,
+                     //       e.event_date = null,
+                     //       e.event_name = null,
+                     //       e.contact_details = null
+         
+         
+                     // }
+                     }
+                     else if (r.is_selectable == 1) {
+                        e.start = e.time_in,
+                        e.end = e.time_out,
+                        e.event_date = e.date,
+                        e.event_name = r.name,
+                        e.contact_details = r.contact_email
+         
+                     }
                })
-      
+
                delete e.lat
                delete e.lon
                delete e.created_by
@@ -92,11 +118,11 @@ exports.getbookingByID = (req, res) => {
                delete e.time_in,
                   delete e.time_out,
                   delete e.date,
-      
+
                   delete e.event_name,
                   delete e.contact_email
-                  delete e.hash
-      
+               delete e.hash
+
                return e
             })
             res.send(news)
@@ -118,27 +144,40 @@ exports.getbookingByCatID = (req, res) => {
             let news = emp.map((e) => {
 
                resp.map((r) => {
-                  if (e.event_id == r.id) {
-      
-                     e.title = r.title,
+                  if(r.is_selectable == 0){
+                     if (e.event_id == r.id) {
+                        console.log("start", r.start)
+         
+                        e.title = r.title,
                         e.start = r.start,
                         e.end = r.end,
                         e.event_date = r.date,
                         e.event_name = r.name,
                         e.contact_details = r.contact_email
-                  }
-                  else {
-      
-                     e.start = null,
-                        e.end = null,
-                        e.event_date = null,
-                        e.event_name = null,
-                        e.contact_details = null
-      
-      
-                  }
+                        console.log("start", e.start)
+         
+                     }
+                     // else {
+         
+                     //    e.start = null,
+                     //       e.end = null,
+                     //       e.event_date = null,
+                     //       e.event_name = null,
+                     //       e.contact_details = null
+         
+         
+                     // }
+                     }
+                     else if (r.is_selectable == 1) {
+                        e.start = e.time_in,
+                        e.end = e.time_out,
+                        e.event_date = e.date,
+                        e.event_name = r.name,
+                        e.contact_details = r.contact_email
+         
+                     }
                })
-      
+
                delete e.lat
                delete e.lon
                delete e.created_by
@@ -148,9 +187,9 @@ exports.getbookingByCatID = (req, res) => {
                   delete e.time_out,
                   delete e.date,
                   delete e.hash
-                  delete e.event_name,
+               delete e.event_name,
                   delete e.contact_email
-      
+
                return e
             })
             res.send(news)

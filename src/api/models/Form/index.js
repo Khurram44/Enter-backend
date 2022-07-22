@@ -17,6 +17,7 @@ this.start	    = Events.start;
 this.end    = Events.end;
 this.price	    = Events.price;
 this.date	    = Events.date;
+this.is_selectable = Events.is_selectable;
 this.place	    = Events.place;
 this.contact_email  = Events.contact_email;
 this.flag = Events.flag;
