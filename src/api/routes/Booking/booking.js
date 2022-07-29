@@ -13,6 +13,7 @@ const express = require('express')
  router.put('/update/user/:id',UserController.UpdateUserbooking)
  router.put('/has-account/:email',UserController.updateAccount)
     router.put('/confirm/:id',UserController.Confirmbooking)
+    router.put('/changetime/:id',UserController.ChangeTimeRequest)
  
  //export router for getting access
  module.exports = router
