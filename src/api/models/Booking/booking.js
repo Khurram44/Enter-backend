@@ -438,4 +438,25 @@ booking.deletebooking = (id, result) => {
         }
     })
 }
+
+// booking.changeTimeRequest = (id, data, result) => {
+//     db.query('SELECT * FROM booking where id = ?',id,(err, res) => {
+//         if (err) {
+//             console.log(err)
+//             result(null, err)
+//         }
+//         else {
+//             db.query('SELECT email from user where id = ?',res[0].user_id,(err, resp) => {
+//                 if(err){
+//                     console.log(err)
+//                     result(null, err)
+//                 }
+//                 else{
+//                     db.
+//                 }
+//             })
+//         }
+
+//     })
+// }
 module.exports = booking
