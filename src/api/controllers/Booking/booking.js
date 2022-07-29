@@ -21,11 +21,13 @@ exports.getList = (req, res) => {
                e.event_date = r.date,
                e.event_name = r.name,
                e.contact_details = r.contact_email
+               e.is_selectable = false
               
 
             }
             else if (r.is_selectable == 1) {
                e.title = r.title,
+               e.is_selectable = true
                e.start = e.time_in,
                e.end = e.time_out,
                e.event_date = e.date,
