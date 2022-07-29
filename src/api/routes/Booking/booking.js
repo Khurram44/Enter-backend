@@ -12,6 +12,7 @@ const express = require('express')
  router.put('/update/:id',UserController.Updatebooking)
  router.put('/update/user/:id',UserController.UpdateUserbooking)
  router.put('/has-account/:email',UserController.updateAccount)
+    router.put('/confirm/:id',UserController.Confirmbooking)
  
  //export router for getting access
  module.exports = router

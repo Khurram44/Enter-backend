@@ -78,12 +78,62 @@ const sendNewMail = (id, email, seats, name, venue, date) => {
     </div>`
         };
     }
+    else if (id == 3) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Booking Request Update',
+            html: `<div>
+       <h1>Your Booking request has been Rejected</h1>
+       <p>Your booking for ${seats} no of seats for the event under order no: <h3>${name}</h3>  DATED : ${date}</p>
+       <p>has been rejected.</p>
+    </div>`
+        }
+
+       
+    }
+    else if(id == 4){
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Booking Request Update',
+            html: `<div>
+   <h1>Your Booking request has been Approved</h1>
+   <p>Your booking for ${seats} no of seats for the event under order no: <h3>${name}</h3>  DATED : ${date}</p>
+   <p>has been approved.</p>
+</div>`
+        }
+    }
+    else if(id == 5){
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Booking Request Update',
+            html: `<div>
+   <h1>You have Accepted the Booking request for ${name} </h1>
+   <p>This is to inform you that you have successfully accepted the booking for  event ${name} with ${venue} no of seats under order no: <h3>${seats}</h3>  DATED : ${date}</p>
+   
+</div>`
+        }
+    }
+    else if(id == 6){
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Booking Request Update',
+            html: `<div>
+   <h1>You have Rejected the Booking request for ${name} </h1>
+   <p>This is to inform you that you have successfully rejected the booking for  event ${name} with ${venue} no of seats under order no: <h3>${seats}</h3>  DATED : ${date}</p>
+   
+</div>`
+        }
+    }
 
 
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return console.log(error.message);
+            return console.log("errir",error.message);
         }
         console.log('success');
     });
@@ -287,20 +337,76 @@ booking.updateUserbooking = (id, data, result) => {
 //Confirm booking
 booking.confirmbooking = (id, data, result) => {
 
-    db.query('UPDATE booking SET status=?, updated_at = ? WHERE    id=?',
-        [
-            data.status, data.updated_at
-
-            , id], (err, res) => {
+    db.query("SELECT * from booking where id = ?",id,(err, res) => {
+        if (err) {
+            console.log(err)
+            result(null, err)
+        }
+        else {
+            db.query("SELECT email from user WHERE id=?", res[0].user_id, (err, resp) => {
                 if (err) {
                     console.log(err)
                     result(null, err)
                 }
                 else {
-                    console.log("success")
-                    result(null, { status: true, message: "UPDATED", id: res.id })
+                    db.query('UPDATE booking SET status=?, updated_at = ? WHERE    id=?',
+                        [
+                            data.status, data.updated_at
+
+                            , id], (err, response) => {
+                                if (err) {
+                                    console.log(err)
+                                    result(null, err)
+                                }
+                                else {
+                                    console.log("success")
+                                    console.log("resp", resp[0].email)
+                                    console.log("res", res)
+                                    if(data.status==1){
+                                    sendNewMail(4, resp[0].email, res[0].seats, res[0].order_no, res[0].venue,res[0].date)
+                                    }
+                                    else if(data.status==2){
+                                    sendNewMail(3, resp[0].email, res[0].seats, res[0].order_no, res[0].venue,res[0].date)
+                                    }
+                                    db.query('SELECT * from events WHERE id=?', [res[0].event_id], (err, response) => {
+                                        if (err) {
+                                            console.log(err)
+                                            result(null, err)
+                                        }
+                                        else {
+                                            if(data.status==1){
+                                            sendNewMail(5, response[0].contact_email, res[0].order_no, response[0].title, res[0].seats, response[0].date)
+                                            result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
+                                            }
+                                            else if(data.status==2){
+                                            sendNewMail(6, response[0].contact_email, res[0].order_no, response[0].title, res[0].seats, response[0].date)
+                                            result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
+                                            }}
+                                    })
+                                }
+                            })
                 }
+
             })
+        }
+    })
+    // db.query('UPDATE booking SET status=?, updated_at = ? WHERE    id=?',
+    //     [
+    //         data.status, new Date().toISOString().slice(0, 19).replace('T', ' ')
+
+    //         , id], (err, res) => {
+    //             if (err) {
+    //                 console.log(err)
+    //                 result(null, err)
+    //             }
+    //             else {
+    //                 console.log("success")
+    //                 if(data.status===1){
+    //                     sendNewMail(3, res[0].contact_email, res[0].seats, res[0].title, res[0].venue, res[0].date)
+    //                 }
+    //                 result(null, { status: true, message: "UPDATED", id: res.id })
+    //             }
+    //         })
 
 }
 booking.updateAccount = (id, data, result) => {
