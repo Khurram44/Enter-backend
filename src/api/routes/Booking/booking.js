@@ -14,6 +14,7 @@ const express = require('express')
  router.put('/has-account/:email',UserController.updateAccount)
     router.put('/confirm/:id',UserController.Confirmbooking)
     router.put('/changetime/:id',UserController.ChangeTimeRequest)
+    router.put('/changetime/confirm/:id',UserController.ConfirmChangeTimeRequest)
  
  //export router for getting access
  module.exports = router

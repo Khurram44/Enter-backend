@@ -142,6 +142,62 @@ const sendNewMail = (id, email, seats, name, venue, date) => {
 </div>`
         }
     }
+    else if (id == 8) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Update On Time Change Request',
+            html: `<div>
+   <h1>You have accepted the change time request </h1>
+   <p>This is to inform you that you've accepted the request for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
+   Check-In: ${venue}  Check-Out:${date}</p>
+   <p>The B-Enter Team</p>
+   
+</div>`
+        }
+    }
+    else if (id == 9) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Update On Time Change Request',
+            html: `<div>
+   <h1>Your time change request has been Accepted </h1>
+   <p>This is to inform you that your proposed time change rrequest  for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
+   Check-In: ${venue}  Check-Out:${date}</p>
+   <p>Has been Accepted by the user</p>
+   
+</div>`
+        }
+    }
+    else if (id == 10) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Update On Time Change Request',
+            html: `<div>
+   <h1>Your time change request has been Rejected </h1>
+   <p>This is to inform you that your proposed time change rrequest  for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
+   Check-In: ${venue}  Check-Out:${date}</p>
+   <p>Has been Rejected by the user</p>
+   
+</div>`
+        }
+    }
+    else if (id == 11) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Update On Time Change Request',
+            html: `<div>
+            <h1>You have Rejected the change time request </h1>
+            <p>This is to inform you that you've Rejected the request for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
+            Check-In: ${venue}  Check-Out:${date}</p>
+            <p>The B-Enter Team</p>
+            
+         </div>`
+        }
+    }
 
 
 
@@ -475,7 +531,7 @@ booking.changeTimeRequest = (id, data, result) => {
                         }
                         else {
                             console.log("Seller", response[0].contact_email)
-                            db.query("UPDATE booking set status = 0 , time_in =? , time_out=? WHERE id = ?", [data.time_in, data.time_out, id], (err, rest) => {
+                            db.query("UPDATE booking set status = 3 , time_in =? , time_out=? WHERE id = ?", [data.time_in, data.time_out, id], (err, rest) => {
                                 if (err) {
                                     console.log(err)
                                     result(null, err)
@@ -483,6 +539,54 @@ booking.changeTimeRequest = (id, data, result) => {
                                 else {
                                     //    console.log("seats", response)
                                     sendNewMail(7, resp[0].email, response[0].title, res[0].order_no, data.time_in, data.time_out)
+                                    result(null, { status: true, message: "Booking has been updated successfully", id: rest.id })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+
+    })
+}
+
+booking.ConfirmchangeTimeRequest = (id, data, result) => {
+    db.query('SELECT * FROM booking where id = ?', id, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(null, err)
+        }
+        else {
+            db.query('SELECT email from user where id = ?', res[0].user_id, (err, resp) => {
+                if (err) {
+                    console.log(err)
+                    result(null, err)
+                }
+                else {
+                    console.log("Buyer", resp[0].email)
+                    db.query("SELECT * from events WHERE id=?", res[0].event_id, (err, response) => {
+                        if (err) {
+                            console.log(err)
+                            result(null, err)
+                        }
+                        else {
+                            console.log("Seller", response[0].contact_email)
+                            db.query("UPDATE booking set status = ? WHERE id = ?", [data.status, id], (err, rest) => {
+                                if (err) {
+                                    console.log(err)
+                                    result(null, err)
+                                }
+                                else {
+                                    //    console.log("seats", response)
+                                    if(data.status==1){
+                                    sendNewMail(8, resp[0].email, response[0].title, res[0].order_no, res[0].time_in, res[0].time_out)
+                                    sendNewMail(9, response[0].contact_email, response[0].title, res[0].order_no, res[0].time_in, res[0].time_out)
+                                    }
+                                    else if(data.status==2){
+                                        sendNewMail(10, response[0].contact_email, response[0].title, res[0].order_no, res[0].time_in, res[0].time_out)
+                                        sendNewMail(11, resp[0].email, response[0].title, res[0].order_no, res[0].time_in, res[0].time_out)
+                                    }
                                     result(null, { status: true, message: "Booking has been updated successfully", id: rest.id })
                                 }
                             })
