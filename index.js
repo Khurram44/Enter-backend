@@ -59,6 +59,7 @@ const bookingRoute  = require("./src/api/routes/Booking/booking")
 const device = require('./src/api/routes/Device/index')
 var nodemailer = require('nodemailer');
 const push = require('./src/api/Push/router')
+const feedback = require('./src/api/routes/Feedback/feedback')
 
 
 
@@ -72,6 +73,7 @@ app.use('/api/agent',agentRoute)
 app.use('/api/booking',bookingRoute)
 app.use('/api/push',push)
 app.use('/api/device',device)
+app.use('/api/feedback',feedback)
 
 
 
