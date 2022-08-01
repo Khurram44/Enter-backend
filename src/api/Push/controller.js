@@ -27,7 +27,7 @@ if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
       res.send(400).send({ success: false, message: "Please fill up all the fields" })
    }
    else {
-      module.SendNotificationAll(req.params.id, data, (err, emp) => {
+      module.SendNotificationAll(data, (err, emp) => {
          if (err) {
             res.send(err)
          }
