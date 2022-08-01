@@ -46,8 +46,7 @@ Feedback.getFeedbackByID=(id,result)=>{
 
         }
         else{
-            console.log("selected by ID")
-            result(null,res)
+            db.query('SELECT * from user', (err,resp)=>{})
         }
     })
 }
@@ -72,8 +71,8 @@ Feedback.createFeedback=(EmpReqData, result)=>{
 //Update Model
 Feedback.updateFeedback=(id,data,result)=>{
 
-    db.query('UPDATE feedback SET name = ? WHERE id=?',
-    [data.name,id],(err,res)=>{
+    db.query('UPDATE feedback SET is_active = ? WHERE id=?',
+    [data.is_active,id],(err,res)=>{
         if(err)
         {
             console.log(err)
