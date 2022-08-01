@@ -1,4 +1,4 @@
-var module = require('../../models/Feedback/Feedback')
+var module = require('../../models/Feedback/feedback')
 
 exports.getList = (req,res) =>{
    console.log("complete list here")

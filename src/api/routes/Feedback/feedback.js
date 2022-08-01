@@ -3,7 +3,7 @@ const express = require('express')
  const router = express.Router()
 
  //import employee controller
- const UserController = require("../../controllers/Feedback/Feedback");
+ const UserController = require("../../controllers/Feedback/feedback");
  router.get('/', UserController.getList)
  router.get('/:id',UserController.getFeedbackByID)
   router.post('/',UserController.AddFeedback)
