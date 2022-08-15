@@ -428,14 +428,12 @@ booking.updatebooking = (id, data, result) => {
 }
 //Update User Booking Model
 booking.updateUserbooking = (id, data, result) => {
-    db.query("SELECT * from booking WHERE order_no=?", id, (err, res) => {
+    db.query("SELECT * from booking WHERE id=?", id, (err, res) => {
         if (err) {
             console.log(err)
             result(null, err)
         }
-        else if(res[0].hash === ""){
-            result(null, {status: false, message: "Operation cannot be performed. Please contact admin"})
-        }
+        
         else {
             db.query("SELECT email from user WHERE id=?", res[0].user_id, (err, resp) => {
                 if (err) {
@@ -464,7 +462,7 @@ booking.updateUserbooking = (id, data, result) => {
                                         }
                                         else {
                                             sendNewMail(2, response[0].contact_email, data.seats, response[0].title, response[0].venue, response[0].date)
-                                            result(null, { status: true, message: "UPDATED", id: response.id })
+                                            result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
                                         }
                                     })
                                 }
@@ -481,10 +479,13 @@ booking.updateUserbooking = (id, data, result) => {
 //Confirm booking
 booking.confirmbooking = (id, data, result) => {
 
-    db.query("SELECT * from booking where id = ?", id, (err, res) => {
+    db.query("SELECT * from booking where order_no = ?", id, (err, res) => {
         if (err) {
             console.log(err)
             result(null, err)
+        }
+        else if(res[0].hash === ""){
+            result(null, {status: false, message: "Operation cannot be performed. Please contact admin"})
         }
         else {
             db.query("SELECT email from user WHERE id=?", res[0].user_id, (err, resp) => {
@@ -493,9 +494,9 @@ booking.confirmbooking = (id, data, result) => {
                     result(null, err)
                 }
                 else {
-                    db.query('UPDATE booking SET status=?, updated_at = ? WHERE    id=?',
+                    db.query('UPDATE booking SET status=?, updated_at = ? WHERE    order_no=?',
                         [
-                            data.status, data.updated_at
+                            data.status, new Date().toISOString().slice(0, 19).replace('T', ' ')
 
                             , id], (err, response) => {
                                 if (err) {
@@ -503,28 +504,26 @@ booking.confirmbooking = (id, data, result) => {
                                     result(null, err)
                                 }
                                 else {
-                                    console.log("success")
-                                    console.log("resp", resp[0].email)
-                                    console.log("res", res)
+                                    
                                     if (data.status == 1) {
-                                        sendNewMail(4, resp[0].email, res[0].seats, res[0].order_no, res[0].venue, res[0].date)
+                                        sendNewMail(4, resp[0].email, res[0].seats, res[0].order_no, res[0].venue, res[0].date,"")
                                     }
                                     else if (data.status == 2) {
-                                        sendNewMail(3, resp[0].email, res[0].seats, res[0].order_no, res[0].venue, res[0].date)
+                                        sendNewMail(3, resp[0].email, res[0].seats, res[0].order_no, res[0].venue, res[0].date,"")
                                     }
                                     db.query('SELECT * from events WHERE id=?', [res[0].event_id], (err, response) => {
                                         if (err) {
-                                            console.log(err)
+                                          
                                             result(null, err)
                                         }
                                         else {
                                             if (data.status == 1) {
-                                                sendNewMail(5, response[0].contact_email, res[0].order_no, response[0].title, res[0].seats, response[0].date)
-                                                result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
+                                                sendNewMail(5, response[0].contact_email, res[0].order_no, response[0].title, res[0].seats, response[0].date,"")
+                                                result(null, { status: true, message: "UPDATED", id: response.id })
                                             }
                                             else if (data.status == 2) {
-                                                sendNewMail(6, response[0].contact_email, res[0].order_no, response[0].title, res[0].seats, response[0].date)
-                                                result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
+                                                sendNewMail(6, response[0].contact_email, res[0].order_no, response[0].title, res[0].seats, response[0].date,"")
+                                                result(null, { status: true, message: "UPDATED", id: response.id })
                                             }
                                         }
                                     })

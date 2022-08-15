@@ -285,12 +285,12 @@ exports.Confirmbooking = (req, res) => {
       res.send(400).send({ success: false, message: "Please fill up all the fields" })
    }
    else {
-      module.confirmbooking(req.params.id, data, (err, emp) => {
+      module.confirmbooking(req.params.order_no, data, (err, emp) => {
          if (err) {
             res.send(err)
          }
          else {
-            res.json({ status: true, message: "Success", data: emp.InsertId })
+            res.json({ status: true, message: emp.message, data: emp.InsertId })
          }
       })
       console.log("valid data")
