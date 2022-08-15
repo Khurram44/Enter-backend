@@ -262,7 +262,7 @@ exports.UpdateUserbooking = (req, res) => {
       res.send(400).send({ success: false, message: "Please fill up all the fields" })
    }
    else {
-      module.updateUserbooking(req.params.id, data, (err, emp) => {
+      module.updateUserbooking(req.params.order_no, data, (err, emp) => {
          if (err) {
             res.send(err)
          }

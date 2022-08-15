@@ -40,10 +40,9 @@ var booking = function (booking) {
 
 }
 const sendNewMail = (id, email, seats, name, venue, date,user) => {
-    console.log(venue)
+    console.log(id,email,"id")
     var encryptedAES 
-    if(user === undefined){
-        return 0
+    if(user === ""){
     }
     else{
         var users = venue.toString();
@@ -212,6 +211,7 @@ const sendNewMail = (id, email, seats, name, venue, date,user) => {
         }
     }
     else if (id == 12) {
+        console.log(id)
         mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -221,13 +221,14 @@ const sendNewMail = (id, email, seats, name, venue, date,user) => {
             <p>This is to inform you that you've Received a  booking request for event <strong>${name}</strong> with ${seats} no of seats under order no: <h3>${venue}</h3>  Time-Slots : ${date}</p>
 
             <p>The B-Enter Team</p>
-            <button><a href=${`http://192.168.236.2:8080?Id=${hash}&&button=Accept&&Auth=${encryptedAES.toString().replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l')}`} target="_blank" >Accept</a></button>
-            <button><a href=${`http://192.168.236.2:8080?Id=${hash}&&button=Reject&&Auth=${encryptedAES.toString().replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l')}`} target="_blank" >Reject</a></button>
+            <button><a href=${`https://bonburn.com/Test?Id=${hash}&&button=Accept&&Auth=${encryptedAES.toString().replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l')}`} target="_blank" >Accept</a></button>
+            <button><a href=${`https://bonburn.com/Test?Id=${hash}&&button=Reject&&Auth=${encryptedAES.toString().replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l')}`} target="_blank" >Reject</a></button>
             
          </div>`
         }
     }
     else if (id == 13) {
+        console.log(id)
         mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -244,7 +245,7 @@ const sendNewMail = (id, email, seats, name, venue, date,user) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return console.log("errir", error.message);
+            return console.log("error", error.message);
         }
         console.log('success');
     });
@@ -375,8 +376,8 @@ booking.createbooking = (EmpReqData, result) => {
                                 }
                                 else {
                                     console.log("success")
-                                    sendNewMail(13,resp[0].contact_email, EmpReqData.seats, resp[0].title, EmpReqData.order_no, EmpReqData.date)
-                                    sendNewMail(12,"ks7844201@gmail.com", EmpReqData.seats, resp[0].title, EmpReqData.order_no, EmpReqData.date,"8S_0y")
+                                    sendNewMail(12,resp[0].contact_email, EmpReqData.seats, resp[0].title, EmpReqData.order_no, EmpReqData.date,"8S_0y")
+                                    sendNewMail(13,rest[0].email, EmpReqData.seats, resp[0].title, EmpReqData.order_no, EmpReqData.date,"")
                                     result(null, { status: true, message: "Event was Successfully booked", id: res.id })
                                 }
                             })
@@ -413,6 +414,9 @@ booking.updatebooking = (id, data, result) => {
                     }
                     else {
                         console.log("success")
+                        if(data.status === 1){
+                            sendNewMail(4,res[0].contact_email, res[0].seats, res[0].title, res[0].order_no, res[0].date,"8S_0y")
+                        }
                         result(null, { status: true, message: "UPDATED", id: res.id })
                     }
                 })
@@ -424,10 +428,13 @@ booking.updatebooking = (id, data, result) => {
 }
 //Update User Booking Model
 booking.updateUserbooking = (id, data, result) => {
-    db.query("SELECT * from booking WHERE id=?", id, (err, res) => {
+    db.query("SELECT * from booking WHERE order_no=?", id, (err, res) => {
         if (err) {
             console.log(err)
             result(null, err)
+        }
+        else if(res[0].hash === ""){
+            result(null, {status: false, message: "Operation cannot be performed. Please contact admin"})
         }
         else {
             db.query("SELECT email from user WHERE id=?", res[0].user_id, (err, resp) => {
@@ -457,7 +464,7 @@ booking.updateUserbooking = (id, data, result) => {
                                         }
                                         else {
                                             sendNewMail(2, response[0].contact_email, data.seats, response[0].title, response[0].venue, response[0].date)
-                                            result(null, { status: true, message: "Booking has been updated successfully", id: response.id })
+                                            result(null, { status: true, message: "UPDATED", id: response.id })
                                         }
                                     })
                                 }
