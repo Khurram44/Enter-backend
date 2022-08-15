@@ -130,6 +130,24 @@ exports.getbookingByID = (req, res) => {
 
    })
 }
+
+
+exports.checkHash = (req, res) => {
+   module.checkHash(req.params.id, (err, emp) => {
+      if (err) {
+         res.send(err)
+      }
+      else {
+         if (emp === null) {
+            res.send({ success: false, message: emp.message })
+         }
+         else {
+            res.send(emp)
+         }
+      }
+
+   })
+}
 exports.getbookingByCatID = (req, res) => {
    module.getbookingByCatID(req.params.user_id, (err, emp, resp) => {
       if (err) {
@@ -223,12 +241,12 @@ exports.Updatebooking = (req, res) => {
       res.send(400).send({ success: false, message: "Please fill up all the fields" })
    }
    else {
-      module.updatebooking(req.params.id, data, (err, emp) => {
+      module.updatebooking(req.params.order_no, data, (err, emp) => {
          if (err) {
             res.send(err)
          }
          else {
-            res.json({ status: true, message: "Success", data: emp.InsertId })
+            res.json({ status: true, message: emp.message, data: emp.InsertId })
          }
       })
       console.log("valid data")

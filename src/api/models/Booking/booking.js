@@ -2,11 +2,12 @@
 var db = require('../../database/database')
 var nodemailer = require('nodemailer');
 const crypto = require('crypto');
+var CryptoJS = require("crypto-js");
 // const { v3: uuidv3 } = require('uuid');
 // console.log(uuid.v3())
 function makeid(length) {
     var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabc.defghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() *
@@ -14,7 +15,7 @@ function makeid(length) {
     }
     return result;
 }
-let hash = makeid(100);
+let hash = makeid(150);
 //create model/schema for table
 var booking = function (booking) {
 
@@ -38,9 +39,18 @@ var booking = function (booking) {
     this.updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 }
-const sendNewMail = (id, email, seats, name, venue, date) => {
-    console.log(email, seats, name, venue, date)
+const sendNewMail = (id, email, seats, name, venue, date,user) => {
+    console.log(venue)
+    var encryptedAES 
+    if(user === undefined){
+        return 0
+    }
+    else{
+        var users = venue.toString();
+    encryptedAES = CryptoJS.AES.encrypt(users, "My Secret Passphrase");
 
+    }
+    
     let transporter = nodemailer.createTransport({
         host: process.env.HOST,
         port: 465,
@@ -177,7 +187,7 @@ const sendNewMail = (id, email, seats, name, venue, date) => {
             subject: 'Update On Time Change Request',
             html: `<div>
    <h1>Your time change request has been Rejected </h1>
-   <p>This is to inform you that your proposed time change rrequest  for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
+   <p>This is to inform you that your proposed time change request  for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
    Check-In: ${venue}  Check-Out:${date}</p>
    <p>Has been Rejected by the user</p>
    
@@ -193,7 +203,38 @@ const sendNewMail = (id, email, seats, name, venue, date) => {
             <h1>You have Rejected the change time request </h1>
             <p>This is to inform you that you've Rejected the request for event <strong>${seats}</strong> under order no: <h3>${name}</h3>  Time-Slots :
             Check-In: ${venue}  Check-Out:${date}</p>
+
+            <button><a href=${`file:///C:/Users/I%20T%20world/Desktop/Websites/Enter-Backend/index.html?Id=${hash}`} target="_blank" >Accept</a></button>
+            <button><a href=${`http://localhost:3000/${hash}`} target="_blank" >Reject</a></button>
             <p>The B-Enter Team</p>
+            
+         </div>`
+        }
+    }
+    else if (id == 12) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'New Booking Request',
+            html: `<div>
+            <h1>You have Got New Booking Request</h1>
+            <p>This is to inform you that you've Received a  booking request for event <strong>${name}</strong> with ${seats} no of seats under order no: <h3>${venue}</h3>  Time-Slots : ${date}</p>
+
+            <p>The B-Enter Team</p>
+            <button><a href=${`http://192.168.236.2:8080?Id=${hash}&&button=Accept&&Auth=${encryptedAES.toString().replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l')}`} target="_blank" >Accept</a></button>
+            <button><a href=${`http://192.168.236.2:8080?Id=${hash}&&button=Reject&&Auth=${encryptedAES.toString().replace(/\+/g,'p1L2u3S').replace(/\//g,'s1L2a3S4h').replace(/=/g,'e1Q2u3A4l')}`} target="_blank" >Reject</a></button>
+            
+         </div>`
+        }
+    }
+    else if (id == 13) {
+        mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'New Booking Request',
+            html: `<div>
+            <h1>Booking Created for ${name} </h1>
+            <p>This is to inform you that you've requested the <strong>booking request</strong> for  event ${name} with ${seats} no of seats under order no: <h3>${venue}</h3>  DATED : ${date}</p>
             
          </div>`
         }
@@ -213,7 +254,6 @@ const sendNewMail = (id, email, seats, name, venue, date) => {
 
 
 
-// id,order_no,event_id,user_id,category,user_name,seats,price_per_seat,total_price,date,time_in,time_out,status,created_at,updated_at
 //Get booking model
 booking.getResult = (result) => {
     db.query('SELECT * from booking', (err, res) => {
@@ -233,6 +273,22 @@ booking.getResult = (result) => {
                     result(null, res, resp)
                 }
             })
+        }
+    })
+}
+
+booking.checkHash = (hash, result) => {
+    db.query('SELECT * from booking where id = ?', [hash], (err, res) => {
+        if (err) {
+            console.log('error while fetching', err)
+            result(null, err)
+        }
+        else if (res.length > 0) {
+            console.log('selected')
+            result(null, {result: true , message:res[0].hash})
+        }
+        else {
+            result(null, {result: false , message:"No hash found"})
         }
     })
 }
@@ -311,18 +367,16 @@ booking.createbooking = (EmpReqData, result) => {
                     console.log(resp[0].capacity - EmpReqData.seats)
                     let seats = resp[0].capacity - EmpReqData.seats
 
-                    db.query(`UPDATE events SET capacity=?, updated_at = ? WHERE    id=?`,
-                        [
-                            seats, new Date().toISOString().slice(0, 19).replace('T', ' ')
-
-                            , EmpReqData.event_id], (err, res) => {
+                    db.query(`SELECT * FROM user WHERE id=?`,
+                        [ EmpReqData.user_id], (err, rest) => {
                                 if (err) {
                                     console.log(err)
                                     result(null, err)
                                 }
                                 else {
                                     console.log("success")
-                                    sendNewMail(resp[0].contact_email, EmpReqData.seats, resp[0].title, EmpReqData.venue, EmpReqData.date)
+                                    sendNewMail(13,resp[0].contact_email, EmpReqData.seats, resp[0].title, EmpReqData.order_no, EmpReqData.date)
+                                    sendNewMail(12,"ks7844201@gmail.com", EmpReqData.seats, resp[0].title, EmpReqData.order_no, EmpReqData.date,"8S_0y")
                                     result(null, { status: true, message: "Event was Successfully booked", id: res.id })
                                 }
                             })
@@ -338,21 +392,34 @@ booking.createbooking = (EmpReqData, result) => {
 
 //Update Model
 booking.updatebooking = (id, data, result) => {
+    db.query("SELECT * FROM booking WHERE order_no = ?", id, (err, res) => {
+        if(err){
+            console.log(err)
+            result(null, err)
+        }
+        else if(res[0].hash === ""){
+            result(null, {status: false, message: "Operation cannot be performed. Please contact admin"})
+        }
+        else{
+            console.log("hash", res[0].hash)
+            db.query("UPDATE booking SET status=?, updated_at = ? , hash='' WHERE order_no=?",
+            [
+                data.status,new Date().toISOString().slice(0, 19).replace('T', ' ')
+    
+                , id], (err, res) => {
+                    if (err) {
+                        console.log(err)
+                        result(null, err)
+                    }
+                    else {
+                        console.log("success")
+                        result(null, { status: true, message: "UPDATED", id: res.id })
+                    }
+                })
 
-    db.query('UPDATE booking SET status=?, updated_at = ? WHERE    id=?',
-        [
-            data.status, data.updated_at
+        }
+    })
 
-            , id], (err, res) => {
-                if (err) {
-                    console.log(err)
-                    result(null, err)
-                }
-                else {
-                    console.log("success")
-                    result(null, { status: true, message: "UPDATED", id: res.id })
-                }
-            })
 
 }
 //Update User Booking Model

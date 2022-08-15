@@ -60,6 +60,7 @@ const device = require('./src/api/routes/Device/index')
 var nodemailer = require('nodemailer');
 const push = require('./src/api/Push/router')
 const feedback = require('./src/api/routes/Feedback/feedback')
+const cypher = require('./src/api/auth/cypherroute')
 
 
 
@@ -74,6 +75,7 @@ app.use('/api/booking',bookingRoute)
 app.use('/api/push',push)
 app.use('/api/device',device)
 app.use('/api/feedback',feedback)
+app.use('/api/cypher',cypher)
 
 
 
