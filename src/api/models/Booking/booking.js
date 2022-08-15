@@ -485,16 +485,19 @@ booking.confirmbooking = (id, data, result) => {
             result(null, err)
         }
         else if(res[0].hash === ""){
+        console.log(res[0].hash)
             result(null, {status: false, message: "Operation cannot be performed. Please contact admin"})
         }
         else {
+        console.log("sdsds",res[0].hash)
+
             db.query("SELECT email from user WHERE id=?", res[0].user_id, (err, resp) => {
                 if (err) {
                     console.log(err)
                     result(null, err)
                 }
                 else {
-                    db.query('UPDATE booking SET status=?, updated_at = ? WHERE    order_no=?',
+                    db.query("UPDATE booking SET status=?, updated_at = ? , hash='' WHERE    order_no=?",
                         [
                             data.status, new Date().toISOString().slice(0, 19).replace('T', ' ')
 
