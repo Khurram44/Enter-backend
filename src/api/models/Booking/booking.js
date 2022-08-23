@@ -18,9 +18,6 @@ function makeid(length) {
 let hash = makeid(150);
 //create model/schema for table
 var booking = function (booking) {
-
-
-
     this.id = booking.id;
     this.order_no = booking.order_no;
     this.event_id = booking.event_id;
