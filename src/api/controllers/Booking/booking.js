@@ -6,8 +6,12 @@ exports.getList = (req, res) => {
       if (err) {
          res.send(err)
       }
+      else if(emp.status == false)
+      {
+         res.send({status:false , message:"No record found"})
+      }
 
-      let news = emp.map((e) => {
+     else { let news = emp.map((e) => {
 
          resp.map((r) => {
             // console.log("start",r.is_selectable)
@@ -64,7 +68,7 @@ exports.getList = (req, res) => {
 
          return e
       })
-      res.send(news)
+      res.send(news)}
    })
 }
 
