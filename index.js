@@ -77,7 +77,10 @@ app.use('/api/device',device)
 app.use('/api/feedback',feedback)
 app.use('/api/cypher',cypher)
 
-
+var http = require("http");
+setInterval(function() {
+    http.get("https://enterapi.herokuapp.com/");
+}, 1000000)
 
 
 //Listening to the port
