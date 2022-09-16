@@ -79,7 +79,7 @@ app.use('/api/cypher',cypher)
 
 var http = require("http");
 setInterval(function() {
-    http.get("https://enterapi.herokuapp.com/");
+    http.get("http://enterapi.herokuapp.com/");
 }, 1000000)
 
 
