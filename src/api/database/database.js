@@ -6,10 +6,10 @@ const dbConnection = mysql.createPool({
     // user :"root",
     // password: "",
     // database:"enter"
-    host: "184.168.101.228",
-    user :"enter",
-    password: "enter",
-    database:"enterdb"
+    host: "lhcp3200.webapps.net",
+    user :"mg53u0ou_enter",
+    password: "fde.7ep$1$}+",
+    database:"mg53u0ou_enterapp"
 })
 
 // calling to connect

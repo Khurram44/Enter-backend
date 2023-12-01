@@ -32,7 +32,7 @@ if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
             res.send(err)
          }
          else {
-            res.json({ status: true, message: emp, data: emp.InsertId })
+            res.json({status:emp.status,  message: emp.message, data: emp.InsertId })
          }
       })
       console.log("valid data")

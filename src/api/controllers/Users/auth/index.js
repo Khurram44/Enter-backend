@@ -117,7 +117,7 @@ exports.LoginAgents=(req,res)=>{
          }
          else{
            
-            res.json({status:true, message:emp.message,data:emp.id,token:emp.token})
+            res.json({status:true, message:emp.message,data:emp.id,name:emp.name,token:emp.token})
          }
       })
       console.log("valid data")

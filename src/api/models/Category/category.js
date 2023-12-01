@@ -8,6 +8,7 @@ var category = function(category) {
 this.id = category.id;
 this.name = category.name;
 this.main_image = category.main_image;
+this.colorcode = category.colorcode
 
 
 }   
@@ -62,8 +63,8 @@ category.createcategory=(EmpReqData, result)=>{
 //Update Model
 category.updatecategory=(id,data,result)=>{
 
-    db.query('UPDATE category SET name = ? WHERE id=?',
-    [data.name,id],(err,res)=>{
+    db.query('UPDATE category SET name = ? , main_image =? WHERE id=?',
+    [data.name,data.main_image,id],(err,res)=>{
         if(err)
         {
             console.log(err)

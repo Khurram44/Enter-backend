@@ -30,6 +30,7 @@ exports.getcategoryByID= (req,res)=>{
 exports.Addcategory=(req,res)=>{
    const data = new module(req.body)   
    console.log("request data", req.body)
+   console.log("check category api here")
 
    if(req.body.constructor === Object && Object.keys(req.body).length===0)
    {

@@ -45,14 +45,25 @@ Devices.getDevicesByID=(id,result)=>{
 
 //Create model
 Devices.createDevices=(EmpReqData, result)=>{
-    db.query('SELECT device_id from pushnotifications where device_id = ?',EmpReqData.device_id,(err,res)=>{
+    db.query('SELECT * from pushnotifications where device_id = ?',EmpReqData.device_id,(err,res)=>{
         if(err)
         {
             console.log(err)
             result(null,{status:false, message:err})
         }
         else if(res.length>0){
-            result(null,{status:false, message:"Already registered"})
+                db.query("UPDATE pushnotifications SET user_id = ? WHERE device_id = ?",[EmpReqData.user_id,EmpReqData.device_id],(err,psh)=>{
+                    if(err)
+                    {
+                        console.log(err)
+                        result(null,{status:false, message:err})
+                    }
+                    else{
+            result(null,{status:false, message:"Update registered"})
+
+                    }  
+                })
+            
         }
         else{
             db.query('INSERT into pushnotifications SET ?', EmpReqData,(err,res)=>{

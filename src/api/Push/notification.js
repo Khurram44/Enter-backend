@@ -8,22 +8,17 @@ this.message = booking.message;
 
 }
 booking.SendNotification =  (id, data, result) => {
-    db.query("SELECT user_id FROM booking WHERE id = ?", [id], (err, resp) => {
-        if(err) {
-            console.log(err)
-        }
-        else {
-            console.log(resp[0].user_id)
-            db.query('SELECT device_id from pushnotifications WHERE user_id=?', resp[0].user_id, (err, res) => {
+  console.log("SendNotification",data.message , id);
+            db.query('SELECT * from pushnotifications WHERE user_id=?', id, (err, res) => {
                 if (err) {
                     result(err, null);
                 }
                 else {
                     result(null, res);
-                    console.log(res);
+                    // console.log(res);
                
             
-            console.log("SendNotification",data.message);
+            // console.log("SendNotification",data.message);
         
                 // Create a new Expo SDK client
                 // optionally providing an access token if you have enabled push security
@@ -35,7 +30,7 @@ booking.SendNotification =  (id, data, result) => {
                 for (let i = 0; i < res.length; i++) {
                     tkk.push(res[i].device_id)
                 }
-                console.log("TKKK",tkk)
+                // console.log("TKKK",tkk)
                 
                 for ( let pushToken of tkk)
                 {
@@ -65,7 +60,7 @@ booking.SendNotification =  (id, data, result) => {
                   for (let chunk of chunks) {
                     try {
                       let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-                      console.log(ticketChunk);
+                      // console.log(ticketChunk);
                       tickets.push(...ticketChunk);
                       // NOTE: If a ticket contains an error code in ticket.details.error, you
                       // must handle it appropriately. The error codes are listed in the Expo
@@ -82,7 +77,6 @@ booking.SendNotification =  (id, data, result) => {
                     receiptIds.push(ticket.id);
                   }
                 }
-                
                 let receiptIdChunks = expo.chunkPushNotificationReceiptIds(receiptIds);
                 (async () => {
                   for (let chunk of receiptIdChunks) {
@@ -108,10 +102,7 @@ booking.SendNotification =  (id, data, result) => {
                   }
                 })();
             }     
-            })
-        }
-    })
-           
+            })           
 }
 
 //Send notification to all
@@ -122,12 +113,6 @@ booking.SendNotificationAll =  (data, result) => {
                   result(err, null);
               }
               else {
-                  result(null, res);
-                  console.log(res);
-             
-          
-          console.log("SendNotification",data.message);
-      
               // Create a new Expo SDK client
               // optionally providing an access token if you have enabled push security
               let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
@@ -139,6 +124,7 @@ booking.SendNotificationAll =  (data, result) => {
                   tkk.push(res[i].device_id)
               }
               console.log("TKKK",tkk)
+            result(null,{status:true,message:"Success"})
               
               for ( let pushToken of tkk)
               {
@@ -146,6 +132,8 @@ booking.SendNotificationAll =  (data, result) => {
               
                 // Check that all your push tokens appear to be valid Expo push tokens
                 if (!Expo.isExpoPushToken(pushToken)) {
+                  result(null, {status:false , err:`Push token ${pushToken} is not a valid Expo push token`});
+                  console.log(res);
                   console.error(`Push token ${pushToken} is not a valid Expo push token`);
                   continue;
                 }

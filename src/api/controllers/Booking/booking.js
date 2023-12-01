@@ -11,7 +11,8 @@ exports.getList = (req, res) => {
          res.send({status:false , message:"No record found"})
       }
 
-     else { let news = emp.map((e) => {
+     else { 
+      let news = emp.map((e) => {
 
          resp.map((r) => {
             // console.log("start",r.is_selectable)
@@ -41,16 +42,6 @@ exports.getList = (req, res) => {
             }
            
             }
-            // else {
-
-            //    e.start = null,
-            //       e.end = null,
-            //       e.event_date = null,
-            //       e.event_name = null,
-            //       e.contact_details = null
-
-
-            // }
            
          })
 
@@ -68,7 +59,7 @@ exports.getList = (req, res) => {
 
          return e
       })
-      res.send(news)}
+      res.send(news.filter(f=>f.hasOwnProperty('event_date')))}
    })
 }
 
@@ -128,7 +119,7 @@ exports.getbookingByID = (req, res) => {
 
                return e
             })
-            res.send(news)
+            res.send(news.filter(f=>f.hasOwnProperty('event_date')))
          }
       }
 
@@ -158,28 +149,30 @@ exports.getbookingByCatID = (req, res) => {
          res.send(err)
       }
       else {
-         if (emp === null) {
+         // console.log(resp.length,"resp")
+         if (emp.status == false) {
             res.send({ success: false, message: "No data found" })
          }
          else {
+            let tobeRemoved = []
             let news = emp.map((e) => {
-
                resp.map((r) => {
-                  if(e.event_id == r.id){
-                     if (r.is_selectable == 0) {
-                        console.log("start", r.title)
+                  if(e.event_id == r.id)
+                     // if (r.is_selectable == 0) {
+                     //    console.log("start", r.title)
          
-                        e.title = r.title,
-                        e.start = r.start,
-                        e.end = r.end,
-                        e.event_date = r.date,
-                        e.event_name = r.name,
-                        e.contact_details = r.contact_email
-                        e.is_selectable = false
+                     //    e.title = r.title,
+                     //    e.start = r.start,
+                     //    e.end = r.end,
+                     //    e.event_date = r.date,
+                     //    e.event_name = r.name,
+                     //    e.contact_details = r.contact_email
+                     //    e.is_selectable = false
                        
          
-                     }
-                     else if (r.is_selectable == 1) {
+                     // }
+                     // else if (r.is_selectable == 1)
+                      {
                         e.title = r.title,
                         e.start = e.time_in,
                         e.end = e.time_out,
@@ -188,7 +181,76 @@ exports.getbookingByCatID = (req, res) => {
                         e.contact_details = r.contact_email
                         e.is_selectable = true
          
+                     
+                    
                      }
+                   if(e.event_date === "0000-00-00")
+                   {
+                     e.event_date= new Date()
+                   }
+               })
+
+               delete e.lat
+               delete e.lon
+               delete e.created_by
+               // delete e.created_at
+               delete e.updated_at
+               delete e.time_in,
+                  delete e.time_out,
+                  delete e.date,
+                  delete e.hash
+               delete e.event_name,
+                  delete e.contact_email
+
+               return e
+            })
+            res.send(news.filter(f=> f.hasOwnProperty('event_date')))
+            // .filter(f=> new Date().toISOString()<= new Date(f.event_date).toISOString())
+         }
+      }
+
+   })
+}
+
+exports.getbookingByCatIDRejected = (req, res) => {
+   module.getbookingByCatIDRejected(req.params.user_id, (err, emp, resp) => {
+      if (err) {
+         res.send(err)
+      }
+      else {
+         // console.log(resp.length,"resp")
+         if (emp.status == false) {
+            res.send({ success: false, message: "No data found" })
+         }
+         else {
+            let news = emp.map((e) => {
+
+               resp.map((r) => {
+                  if(e.event_id == r.id)
+                     // if (r.is_selectable == 0) {
+                     //    console.log("start", r.title)
+         
+                     //    e.title = r.title,
+                     //    e.start = r.start,
+                     //    e.end = r.end,
+                     //    e.event_date = r.date,
+                     //    e.event_name = r.name,
+                     //    e.contact_details = r.contact_email
+                     //    e.is_selectable = false
+                       
+         
+                     // }
+                     // else if (r.is_selectable == 1)
+                      {
+                        e.title = r.title,
+                        e.start = e.time_in,
+                        e.end = e.time_out,
+                        e.event_date = e.date,
+                        e.event_name = r.name,
+                        e.contact_details = r.contact_email
+                        e.is_selectable = true
+         
+                     
                     
                      }
                })
@@ -207,7 +269,8 @@ exports.getbookingByCatID = (req, res) => {
 
                return e
             })
-            res.send(news)
+            // news.filter(f=> f.hasOwnProperty('event_date'))
+            res.send(news.filter(f=> f.status == 2 && f.hasOwnProperty('event_date')))
          }
       }
 
@@ -266,7 +329,7 @@ exports.UpdateUserbooking = (req, res) => {
       res.send(400).send({ success: false, message: "Please fill up all the fields" })
    }
    else {
-      module.updateUserbooking(req.params.order_no, data, (err, emp) => {
+      module.updateUserbooking(req.params.id, data, (err, emp) => {
          if (err) {
             res.send(err)
          }
@@ -294,7 +357,7 @@ exports.Confirmbooking = (req, res) => {
             res.send(err)
          }
          else {
-            res.json({ status: true, message: emp.message, data: emp.InsertId })
+            res.json({ status: emp.status, message: emp.message, data: emp.InsertId })
          }
       })
       console.log("valid data")
@@ -333,7 +396,7 @@ exports.deletebooking = (req, res) => {
          res.send(err)
       }
       else {
-         res.json({ status: true, message: "Deleted Successfully" })
+         res.json({ status: result.status, message: result.message })
       }
 
    })

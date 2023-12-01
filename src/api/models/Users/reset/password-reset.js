@@ -37,7 +37,7 @@ const sendNewMail=(email,sethash)=>{
        html : `<div>
           <h1>Here is the Link to Update your password.</h1>
           <p>This is your one time activation link. It will be expired in a while</p>
-          <a href=${`http://localhost:3000/reset-password/${sethash}`} target="_blank" >Reset Password</a>
+          <a href=${`http://enterworld.it/reset-password/${sethash}`} target="_blank" >Reset Password</a>
           
        </div>`
     };

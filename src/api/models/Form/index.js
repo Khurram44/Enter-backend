@@ -34,14 +34,22 @@ this.updated_at   = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
 //Get Events model
 Events.getResult = (result) => {
-    db.query('SELECT * from events', (err,res)=>{
+    db.query('SELECT * from events WHERE  DATE(date) >= curdate() OR date="0000-00-00" ', (err,res)=>{
         if(err){
             console.log('error while fetching', err)
             result(null,err)
         }
         else {
+            db.query("SELECT * from category",(err,cat)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    result(null,res,cat)
+                }
+            })
             console.log('fetched successfully', res)
-            result(null,res)
+            // result(null,res)
         }
     })
 }
@@ -56,23 +64,44 @@ Events.getEventsByID=(id,result)=>{
 
         }
         else{
+            db.query("SELECT * from category WHERE id =?",res[0].category,(err,cat)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    result(null,res,cat)
+
+                }
+            })
             console.log("selected by ID")
-            result(null,res)
         }
     })
 }
 
 Events.getEventsByCatID=(id,result)=>{
-    db.query('SELECT * from events WHERE category=?',id,(err,res)=>{
+    db.query(`SELECT * FROM events WHERE ( DATE(date) >= curdate() OR date="0000-00-00") AND category=?`,id,(err,res)=>{
         if(err)
         {
             console.log("error while fetching")
             result(null,err)
 
         }
+        else if(res.length <1)
+        {
+            result(null,{status:false , message:"No events are opened. Please check again in a while."})
+            
+        }
         else{
+            db.query("SELECT * from category WHERE id =?",res[0].category,(err,cat)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    result(null,res,cat)
+
+                }
+            })
             console.log("selected by ID")
-            result(null,res)
         }
     })
 }
@@ -114,6 +143,19 @@ data.title , data.category , data.subTitle , data.venue , data.address , data.la
     })
 
 }
+
+Events.updateImages = (id,data,result)=>{
+    db.query('UPDATE events set img1 = ? ,img2 = ? , img3 = ? , img4 = ? , img5 = ? WHERE id  = ?',[data.img1 , data.img2 , data.img3 , data.img4 , data.img5 ,id],(err,res)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            result(null,{status:true , message:"Image Updated"})
+        }
+
+    })
+
+}
 Events.updateAccount=(id,data,result)=>{
 
     db.query('UPDATE events SET has_account = 1 WHERE email=?',
@@ -131,6 +173,7 @@ Events.updateAccount=(id,data,result)=>{
     })
 
 }
+
 
 //Delete model
 Events.deleteEvents = (id,result)=>{
